@@ -19,22 +19,17 @@ Twig_Extensions_Autoloader::register();
 session_cache_limiter(false);
 session_start();
 
-// test
-phpinfo();
-die();
 
 // set environment
 $devlist = array(
-		'hf', '127.0.0.1');
-$prodlist = array(
-		'cfpatientcases.xc-events.it');
-$staginglist = array(
-		'pipeline.mattimatti.com');
+		'server.dev', '127.0.0.1');
+$prodlist = array();
+$staginglist = array();
 
 if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 
 	define("ENVIRONMENT", 'development');
-	define("HOST", 'http://pipeline.matti');
+	define("HOST", 'http://server.dev');
 	define("BASE_FOLDER", '');
 	error_reporting(E_ALL);
 	ini_set('display_errors', "1");
@@ -43,7 +38,7 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 
 	define("ENVIRONMENT", 'production');
 	define("BASE_FOLDER", '');
-	define("HOST", 'http://cfpatientcases.xc-events.it');
+	define("HOST", 'http://server.dev');
 
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
@@ -51,7 +46,7 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 } else if (in_array($_SERVER['HTTP_HOST'], $staginglist)) {
 
 	define("ENVIRONMENT", 'staging');
-	define("HOST", 'http://pipeline.mattimatti.com');
+	define("HOST", 'http://server.dev');
 	define("BASE_FOLDER", '');
 	error_reporting(0);
 	ini_set('display_errors', 0);
@@ -128,14 +123,13 @@ $app->config('debug', (ENVIRONMENT == 'development') ? true : false);
 $app->config('mode', ENVIRONMENT);
 
 // SETUP DATABASE
+// http://redbeanphp.com/manual/setup
 
 if (ENVIRONMENT == 'development') {
-	R::setup('mysql:host=localhost;dbname=hfwaau', 'root', '');
+	R::setup('mysql:host=33.33.33.90;dbname=dbname', 'root', 'root');
 } else if (ENVIRONMENT == 'production') {
-	R::setup('mysql:host=hostingmysql251.register.it;dbname=xc__events_it_eventi', 'EL2950_eventi', 'XCeventi');
 	R::freeze();
 } else {
-	R::setup('mysql:host=mysql.mattimatti.com;dbname=novartis_pipeline', 'mattimatti', 'th3braiN');
 	R::freeze();
 }
 
@@ -143,6 +137,7 @@ R::debug(true);
 
 // this must be on top.
 include 'controller/auth.php';
+include 'controller/front.php';
 
 $app->run();
 

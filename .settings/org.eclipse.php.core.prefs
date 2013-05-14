@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 include_path=0;/hfwaaulamp
+org.eclipse.php.core.phpForamtterIndentationSize=1
+org.eclipse.php.core.phpForamtterUseTabs=true
 use_asp_tags_as_php=false

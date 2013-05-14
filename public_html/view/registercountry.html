@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<pre>
+ POST /registercountry    [country]
+</pre>
+
+
+      <form class="form-signin" method="post">
+        <h2 class="form-signin-heading">Salva un paese</h2>
+        <input type="text" name="country" value="Italia" class="input-block-level" placeholder="country">
+        <button class="btn btn-primary" type="submit">Salva</button>
+      </form>
+      
+      <hr/>
+      
+      <h3>Risultati</h3>
+      
+<table class="table table-striped table-bordered">
+         {% for country in countries %}
+				                  
+				<tr><td>{{country.name}}</td><td>{{country.count}}</td></tr>               
+				          
+		{% endfor %}
+</table>      
+      
+{% endblock %}

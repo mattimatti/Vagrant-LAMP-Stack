@@ -20,7 +20,7 @@ Vagrant::Config.run do |config|
   config.hosts.name = "server.dev"
 
   # Use hostonly network with a static IP Address
-  config.vm.network :hostonly, "172.90.90.90"
+  config.vm.network :hostonly, "33.33.33.90"
 
   # Set share folder
   use_nfs = !Kernel.is_windows?
@@ -66,9 +66,9 @@ Vagrant::Config.run do |config|
       },
       :mysql => {
         :server_root_password   => 'root',
-        :server_repl_password   => 'root',
-        :server_debian_password => 'root',
-        :bind_address           => '172.90.90.90',
+        :server_repl_password   => 'waau,2013',
+        :server_debian_password => 'waau,2013',
+        :bind_address           => '33.33.33.90',
         :allow_remote_root      => true
       }
     }
