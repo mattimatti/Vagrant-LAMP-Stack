@@ -1,93 +1,95 @@
+{% extends "layout.html" %} {% block content %}
+<pre>
+ POST /app1/registeranswer    [posizione] [qualeAPP] [domanda] [risposte]
+</pre>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Sign in &middot; Twitter Bootstrap</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<hr />
+<form class="form-horizontal" method="post">
+	<h2>Salva una risposta</h2>
 
-    <!-- Le styles -->
-    <link href="/themes/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
+	<div class="control-group">
+		<label class="control-label" for="">posizione</label>
+		<div class="controls">
+			<input type="text" name="posizione" value="1" class="" placeholder="">
+			
+		</div>
+	</div>
 
-      .form-signin {
-        max-width: 300px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
 
-    </style>
-    <link href="/themes/css/bootstrap-responsive.css" rel="stylesheet">
+	<div class="control-group">
+		<label class="control-label" for="">qualeAPP</label>
+		<div class="controls">
+			<input type="text" name="qualeAPP" value="APP2"  class="" placeholder="">
+		</div>
+	</div>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="/themes/js/html5shiv.js"></script>
-    <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/themes/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/themes/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/themes/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/themes/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/themes/ico/favicon.png">
-  </head>
 
-  <body>
+	<div class="control-group">
+		<label class="control-label" for="">domanda</label>
+		<div class="controls">
+			<select name="domanda">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+			</select>
+		</div>
+	</div>
 
-    <div class="container">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="input-block-level" placeholder="Username">
-        <input type="password" class="input-block-level" placeholder="Password">
-       
-        <button class="btn btn-primary" type="submit">Sign in</button>
-      </form>
 
-    </div> <!-- /container -->
+	<div class="control-group">
+		<label class="control-label" for="">risposte</label>
+		<div class="controls">
+			<select name="risposte">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+	</div>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/themes/js/jquery.js"></script>
-    <script src="/themes/js/bootstrap-transition.js"></script>
-    <script src="/themes/js/bootstrap-alert.js"></script>
-    <script src="/themes/js/bootstrap-modal.js"></script>
-    <script src="/themes/js/bootstrap-dropdown.js"></script>
-    <script src="/themes/js/bootstrap-scrollspy.js"></script>
-    <script src="/themes/js/bootstrap-tab.js"></script>
-    <script src="/themes/js/bootstrap-tooltip.js"></script>
-    <script src="/themes/js/bootstrap-popover.js"></script>
-    <script src="/themes/js/bootstrap-button.js"></script>
-    <script src="/themes/js/bootstrap-collapse.js"></script>
-    <script src="/themes/js/bootstrap-carousel.js"></script>
-    <script src="/themes/js/bootstrap-typeahead.js"></script>
 
-  </body>
-</html>
+
+	<input type="hidden" name="simulate" value="1" />
+
+	<button class="btn btn-primary" type="submit">Salva Risposta</button>
+
+</form>
+
+<hr />
+
+<h3>Risultati</h3>
+
+<table class="table table-striped table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>qualeAPP</th>
+		<th>domanda</th>
+		<th>risposte</th>
+		<th>posizione</th>
+	</thead>
+	<tbody>
+		{% for answer in answers %}
+
+		<tr>
+			<td>{{answer.id}}</td>
+			<td>{{answer.qualeAPP}}</td>
+			<td>{{answer.domanda}}</td>
+			<td>{{answer.risposte}}</td>
+			<td>{{answer.posizione}}</td>
+		</tr>
+
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

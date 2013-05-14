@@ -133,7 +133,7 @@ if (ENVIRONMENT == 'development') {
 	R::freeze();
 }
 
-R::debug(true);
+//R::debug(true);
 
 // this must be on top.
 include 'controller/auth.php';

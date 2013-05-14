@@ -15,8 +15,8 @@ $app
 		->get('/resetall', $noAuth(),
 				function () use ($app) {
 
-					$sql = "DROP TABLE countries";
-					R::exec($sql);
+					R::exec("DROP TABLE countries");
+					R::exec("DROP TABLE answers");
 
 					$app->redirect("/");
 
@@ -70,62 +70,124 @@ $app
 
 				});
 
+
+
+
+
 /////////////////////// APP 1 //////////////////////////////////////////////
 
-// Registra le risposte per la app 1
+// Registra le risposte
 $app
 		->get('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
 					$data = array();
-					$data["answers"] = R::findAll("multipleanswer");
+					$data["answers"] = R::find('answers',' qualeAPP = :qualeAPP ',
+							array( ':qualeAPP'=>"APP1" )
+					);
+
+
+
 					$app->render('app1/form.html', $data);
 
 				});
 
-// Registra le risposte per la app 1
+
+
+
+// Registra le risposte
 $app
 		->post('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$answer = R::dispense("multipleanswer");
+					$answer = R::dispense("answers");
 
 					$answer->domanda = $app->request()->post("domanda");
 					$answer->risposte = $app->request()->post("risposte");
 					$answer->qualeAPP = $app->request()->post("qualeAPP");
-
+					$answer->posizione = $app->request()->post("posizione");
 
 					R::store($answer);
 
-					$app->redirect("/app1/registeranswer");
+					// Se stiamo simlando i forms
+					$simulate =$app->request()->post("simulate");
+
+					if($simulate){
+						$app->redirect("/app1/registeranswer");
+					}
+
+
 
 				});
+
+
+
 
 /////////////////////// APP 2 //////////////////////////////////////////////
 
-// Form test  le risposte per la app 2
+// Registra le risposte
 $app
-		->get('/app1/registeranswer', $noAuth(),
-				function () use ($app) {
+->get('/app2/registeranswer', $noAuth(),
+		function () use ($app) {
 
-					$data = array();
-					$app->render('app1/form.html', $data);
+			$data = array();
+			$data["answers"] = R::find('answers',' qualeAPP = :qualeAPP ',
+							array( ':qualeAPP'=>"APP2" )
+					);
+			$app->render('app2/form.html', $data);
 
-				});
+		});
 
-// Registra le risposte per la app2
+
+
+
+// Registra le risposte
 $app
-		->post('/app2/registeranswer', $noAuth(),
-				function () use ($app) {
+->post('/app2/registeranswer', $noAuth(),
+		function () use ($app) {
 
-					$interview = R::dispense("interview");
+			$answer = R::dispense("answers");
 
-					$_SESSION["area"] = $app->request()->post("area");
-					$_SESSION["region"] = $app->request()->post("region");
+			$answer->domanda = $app->request()->post("domanda");
+			$answer->risposte = $app->request()->post("risposte");
+			$answer->qualeAPP = $app->request()->post("qualeAPP");
+			$answer->posizione = $app->request()->post("posizione");
 
-					$app->redirect("/");
+			R::store($answer);
 
-				});
+			// Se stiamo simlando i forms
+			$simulate =$app->request()->post("simulate");
+
+			if($simulate){
+				$app->redirect("/app2/registeranswer");
+			}
+
+
+
+		});
+
+
+
+// Registra le risposte
+$app
+->get('/getstatus', $noAuth(),
+		function () use ($app) {
+
+
+			$last = R::getAll( 'select * from answers ORDER BY id DESC LIMIT 1');
+			echo json_encode($last);
+
+		});
+
+
+
+
+
+
+
+
+
+
 //show a form to add metadata of the interviewed
 $app
 		->get('/start/:category_id/:step', $authApplication(),
