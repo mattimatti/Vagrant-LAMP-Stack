@@ -54,34 +54,40 @@ body {
 	</div>
 
 	<div class="container">
-		{% block content %} {% endblock %} <a href="javascript:;" id="getstatus">Get status</a>
+	
+	<!-- BUTTON TO GET STATUS -->
+		
+	<a href="javascript:;" id="getstatus">Get status</a>
 
-		<pre id="status_response">
 	
 	
-	</pre>
+	<!-- THE STATUS HOLDER -->
+	
+	<pre id="status_response">
+	
+	
+	</pre>	
 
-
-
+		{% block content %} {% endblock %} 
+		
 
 	</div>
-	<!-- /container -->
 
-	<!-- Le javascript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/themes/js/jquery.js"></script>
 	<script src="/themes/js/bootstrap.js"></script>
 
 
-	<script>
+
+
+
+	<script type="text/javascript">
 		$(document).ready(
 				function() {
 
 					$("#getstatus").click(
 							function() {
 
-								$.ajax({url:"/getstatus", success:function(response) {
+								$.ajax({url:"/getstatus", dataType: "json", success:function(response) {
 
 									$("#status_response").html(
 											JSON.stringify(response, undefined,
@@ -94,8 +100,8 @@ body {
 				});
 	</script>
 
-
-
+{% block pagejs %}
+{% endblock %}
 
 
 </body>
