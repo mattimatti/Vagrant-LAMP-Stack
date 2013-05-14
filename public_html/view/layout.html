@@ -38,14 +38,15 @@ body {
 				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="brand" href="/">HFWAAU</a>
+				<a class="brand" href="/manage">HFWAAU</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="active"><a href="/">Home</a></li>
+						<li class="active"><a href="/manage">Home</a></li>
 						<li><a href="/resetall">Elimina tutto</a></li>
 						<li><a href="/registercountry">Registra country</a></li>
-						<li><a href="/app1/registeranswer">App 1 Registra risposta</a></li>
-						<li><a href="/app2/registeranswer">App 2 Registra risposta</a></li>
+						<li><a href="/app1/registeranswer">APP1</a></li>
+						<li><a href="/app2/registeranswer">APP2</a></li>
+						<li><a href="/lastresponse">Ultima risposta</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -54,19 +55,7 @@ body {
 	</div>
 
 	<div class="container">
-	
-	<!-- BUTTON TO GET STATUS -->
-		
-	<a href="javascript:;" id="getstatus">Get status</a>
 
-	
-	
-	<!-- THE STATUS HOLDER -->
-	
-	<pre id="status_response">
-	
-	
-	</pre>	
 
 		{% block content %} {% endblock %} 
 		
@@ -80,25 +69,7 @@ body {
 
 
 
-	<script type="text/javascript">
-		$(document).ready(
-				function() {
 
-					$("#getstatus").click(
-							function() {
-
-								$.ajax({url:"/getstatus", dataType: "json", success:function(response) {
-
-									$("#status_response").html(
-											JSON.stringify(response, undefined,
-													2));
-
-								}});
-
-							});
-
-				});
-	</script>
 
 {% block pagejs %}
 {% endblock %}
