@@ -23,7 +23,7 @@ session_start();
 // set environment
 $devlist = array(
 		'server.dev', '127.0.0.1');
-$prodlist = array();
+$prodlist = array('http://hf.mattimatti.com/');
 $staginglist = array();
 
 if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
@@ -126,11 +126,11 @@ $app->config('mode', ENVIRONMENT);
 // http://redbeanphp.com/manual/setup
 
 if (ENVIRONMENT == 'development') {
-	R::setup('mysql:host=33.33.33.90;dbname=dbname', 'root', 'root');
+	include 'config/development/dbconnection.php';
 } else if (ENVIRONMENT == 'production') {
-	R::freeze();
+	include 'config/production/dbconnection.php';
 } else {
-	R::freeze();
+	include 'config/production/dbconnection.php';
 }
 
 //R::debug(true);
