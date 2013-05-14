@@ -23,7 +23,7 @@ session_start();
 // set environment
 $devlist = array(
 		'server.dev', '127.0.0.1');
-$prodlist = array('http://hf.mattimatti.com/');
+$prodlist = array('hf.mattimatti.com');
 $staginglist = array();
 
 if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
