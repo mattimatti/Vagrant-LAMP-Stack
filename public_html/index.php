@@ -129,8 +129,10 @@ if (ENVIRONMENT == 'development') {
 	include 'config/development/dbconnection.php';
 } else if (ENVIRONMENT == 'production') {
 	include 'config/production/dbconnection.php';
+	R::freeze();
 } else {
 	include 'config/production/dbconnection.php';
+	R::freeze();
 }
 
 //R::debug(true);
