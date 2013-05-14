@@ -1,0 +1,101 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+
+<div class="row">
+<div class="span12">
+<h3>Representatives<span> <small><a href="/admin/users/add/">Add Representative</a></small></span></h3>
+<br/>
+<input type="text" class="span6" id="FilterTextBox" name="FilterTextBox" placeholder="Search representatives Table" />
+
+<p class="help-block">Use free word combinations to filter users</p>
+<br/>
+<table class="table table-striped filterable table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Username</th>
+            <th>Last Access</th>
+            <th>Interviews</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{user.id}}</td>
+            <td><a href="/admin/users/detail/{{user.id}}">{{user.firstname}}</a></td>
+            <td>{{user.lastname}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.last_access}}</td>
+            <td>{{user.getInterviewCount()}}</td>
+            <td><a href="/admin/users/delete/{{user.id}}" class="confirm">delete</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+{% if (has_paging) %}
+<div class="pagination">
+  <ul>
+  {% if (start_idx > 0) %}
+    <li><a href="?start={{start_idx-1}}">Prev</a></li>
+  {% endif %}
+   {% for i in range(1, totalpages) %}
+    <li {% if (i-1 ==  start_idx) %} class="active" {% endif %}>
+      <a href="?start={{i-1}}">{{ i }}</a>
+    </li>
+     {% endfor %}
+     
+    {% if (start_idx < totalpages-1) %}
+	    <li><a href="?start={{start_idx+1}}">Next</a></li>
+	  {% endif %}
+    
+  </ul>
+</div>      
+  {% endif %}
+  
+  
+  
+  
+</div>
+</div>
+{% endblock %}
+
+
+{% block pagescript %}
+<script type="text/javascript">
+
+$(function(){
+	 //add index column with all content.
+	 $(".filterable tr:has(td)").each(function(){
+	   var t = $(this).text().toLowerCase(); //all row text
+	   $("<td class='indexColumn'></td>")
+	    .hide().text(t).appendTo(this);
+	 });//each tr
+	 $("#FilterTextBox").keyup(function(){
+	   var s = $(this).val().toLowerCase().split(" ");
+	   //show all rows.
+	   $(".filterable tr:hidden").show();
+	   $.each(s, function(){
+	       $(".filterable tr:visible .indexColumn:not(:contains('"
+	          + this + "'))").parent().hide();
+	   });//each
+	 });//key up.
+
+      $(".confirm").click(function(e){
+         
+         if(!confirm("Are you sure you want to delete?"))e.preventDefault();
+      });
+
+	 
+	});//document.ready
+
+
+</script>
+{% endblock %}
+
+

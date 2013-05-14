@@ -1,0 +1,30 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<h3>Case Studies<span> <small><a href="/admin/questioncategory/add/">Add Case study</a></small></span></h3>
+<br/>
+<select id="dynamic_select">
+    <option value="" selected>Pick a Patient</option>
+   {% for category in categories %}
+         <option value="/admin/questions/{{category.id}}">{{category.name}}</option>
+  {% endfor %}
+</select>
+
+
+
+{% endblock %}
+
+{% block pagescript %}
+<script type="text/javascript">
+    $(function(){
+      // bind change event to select
+      $('#dynamic_select').bind('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          return false;
+      });
+    });
+</script>
+{% endblock %}

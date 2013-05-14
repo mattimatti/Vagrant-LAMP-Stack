@@ -1,169 +1,158 @@
 <?php
-// MySQL
-$mysqli = new mysqli('localhost', 'root', 'root');
 
-$mysql_running = true;
-if (mysqli_connect_errno()) {
-    $mysql_running = false;
+require 'vendor/slim/Slim/Slim.php';
+require 'vendor/slim/Slim-Extras/Views/TwigView.php';
+require 'vendor/slim/Slim-Extras/LogWriters/TimestampLogFileWriter.php';
+require 'vendor/rb.php';
+
+require 'model/Fake.php';
+
+require 'vendor/PHPMailer/class.phpmailer.php';
+require_once 'vendor/Twig/Autoloader.php';
+
+require_once 'vendor/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+require_once 'vendor/Twig/Extensions/Autoloader.php';
+Twig_Extensions_Autoloader::register();
+
+session_cache_limiter(false);
+session_start();
+
+// test
+phpinfo();
+die();
+
+// set environment
+$devlist = array(
+		'hf', '127.0.0.1');
+$prodlist = array(
+		'cfpatientcases.xc-events.it');
+$staginglist = array(
+		'pipeline.mattimatti.com');
+
+if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
+
+	define("ENVIRONMENT", 'development');
+	define("HOST", 'http://pipeline.matti');
+	define("BASE_FOLDER", '');
+	error_reporting(E_ALL);
+	ini_set('display_errors', "1");
+
+} else if (in_array($_SERVER['HTTP_HOST'], $prodlist)) {
+
+	define("ENVIRONMENT", 'production');
+	define("BASE_FOLDER", '');
+	define("HOST", 'http://cfpatientcases.xc-events.it');
+
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+
+} else if (in_array($_SERVER['HTTP_HOST'], $staginglist)) {
+
+	define("ENVIRONMENT", 'staging');
+	define("HOST", 'http://pipeline.mattimatti.com');
+	define("BASE_FOLDER", '');
+	error_reporting(0);
+	ini_set('display_errors', 0);
+
+}
+
+// setup language
+$availableLanguages = array(
+		'fr' => 'fr_FR.utf8', 'en' => 'en_GB.utf8', 'default' => 'en_GB.utf8');
+
+if (!function_exists("gettext")) {
+	die("gettext is not installed\n");
+}
+
+$lang = "en";
+
+if (isset($_SESSION["lang"])) {
+	$lang = $_SESSION["lang"];
+}
+
+// Setup language
+$locale = (isset($lang) && array_key_exists($lang, $availableLanguages)) ? $availableLanguages[$lang] : $availableLanguages['default'];
+
+$te = 'LC_ALL=$locale';
+putenv($te);
+
+$ta = $locale;
+setlocale(LC_ALL, $ta);
+
+//http://stackoverflow.com/questions/1776205/php-gettext-problems
+// if we are on local development machine, OSX.. different syntax
+if (ENVIRONMENT == 'development') {
+	putenv('LC_ALL=' . $locale);
+	setlocale(LC_ALL, '$ta');
+}
+
+$domain = "messages";
+$locales_root = "includes/locale";
+
+$filename = "$locales_root/$lang/LC_MESSAGES/$domain.mo";
+$mtime = filemtime($filename); // check its modification time
+// our new unique .MO file
+$filename_new = "$locales_root/$lang/LC_MESSAGES/{$domain}_{$mtime}.mo";
+
+if (!file_exists($filename_new)) { // check if we have created it before
+// if not, create it now, by copying the original
+	copy($filename, $filename_new);
+}
+
+// compute the new domain name
+$domain_new = "{$domain}_{$mtime}";
+
+bindtextdomain($domain_new, $locales_root);
+bind_textdomain_codeset($domain_new, 'UTF-8');
+textdomain($domain_new);
+
+// setup twig
+TwigView::$twigDirectory = dirname(__FILE__) . '/vendor/Twig';
+TwigView::$twigExtensions = array(
+		"Twig_Extensions_Extension_I18n");
+//TwigView::$twigOptions = array('cache' => 'tmp/cache/', 'auto_reload' => true);
+TwigView::$twigOptions = array(
+		'cache' => false, 'auto_reload' => true);
+
+// setup slim app
+$app = new Slim(
+		array(
+				'templates.path' => __DIR__ . '/view/', 'log.writer' => new TimestampLogFileWriter(), 'view' => 'TwigView',
+				'cookies.secret_key' => 'MY_SALTY_PEPPER', 'cookies.lifetime' => time() + (1 * 24 * 60 * 60),
+				// = 1 day
+				'cookies.cipher' => MCRYPT_RIJNDAEL_256, 'cookies.cipher_mode' => MCRYPT_MODE_CBC));
+
+$app->config('debug', (ENVIRONMENT == 'development') ? true : false);
+$app->config('mode', ENVIRONMENT);
+
+// SETUP DATABASE
+
+if (ENVIRONMENT == 'development') {
+	R::setup('mysql:host=localhost;dbname=hfwaau', 'root', '');
+} else if (ENVIRONMENT == 'production') {
+	R::setup('mysql:host=hostingmysql251.register.it;dbname=xc__events_it_eventi', 'EL2950_eventi', 'XCeventi');
+	R::freeze();
 } else {
-	$mysql_version = $mysqli->server_version;
+	R::setup('mysql:host=mysql.mattimatti.com;dbname=novartis_pipeline', 'mattimatti', 'th3braiN');
+	R::freeze();
 }
 
-$mysqli->close();
+R::debug(true);
 
-// Memcached
-$m = new Memcached();
-$memcached_running = false;
-if ($m->addServer('localhost', 11211)) {
-	$memcached_running = true;
-	$memcached_version = $m->getVersion();
-	$memcached_version = current($memcached_version);
+// this must be on top.
+include 'controller/auth.php';
+
+$app->run();
+
+function dump($obj) {
+	echo "<pre>";
+	print_r($obj);
+	die();
 }
-?>
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Vagrant LAMP stack</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet" />
-	<link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-	<style type="text/css">
-	html, body {
-		height: 100%;
-	}
-	#wrap {
-		min-height: 100%;
-		height: auto !important;
-		height: 100%;
-		margin: 0 auto -60px;
-	}
-	#push, #footer {
-		height: 60px;
-	}
-	#footer {
-		background-color: #f5f5f5;
-	}
-	@media (max-width: 767px) {
-		#footer {
-			margin-left: -20px;
-			margin-right: -20px;
-			padding-left: 20px;
-			padding-right: 20px;
-		}
-	}
-	.container {
-		width: auto;
-		max-width: 680px;
-	}
-	.container .credit {
-		margin: 20px 0;
-	}
-	.page-header i {
-		float: left;
-		margin-top: -5px;
-		margin-right: 12px;
-	}
-	table td:first-child {
-		width: 300px;
-	}
-    </style>
-</head>
-<body>
-	<div id="wrap">
-		<div class="container">
-			<div class="page-header">
-				<i class="icon-lightbulb icon-4x"></i>
-				<h1>It works!</h1>
-			</div>
-			<p class="lead">The Virtual Machine is up and running, yay! Here's some additional information you might need.</p>
 
-			<h3>Installed software</h3>
-			<table class="table table-striped">
-				<tr>
-					<td>PHP Version</td>
-					<td><?php echo phpversion(); ?></td>
-				</tr>
+function trace($msg) {
+	echo $msg . "<br/>";
 
-				<tr>
-					<td>MySQL running</td>
-					<td><i class="icon-<?php echo ($mysql_running ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>MySQL version</td>
-					<td><?php echo ($mysql_running ? $mysql_version : 'N/A'); ?></td>
-				</tr>
-
-				<tr>
-					<td>Memcached running</td>
-					<td><i class="icon-<?php echo ($memcached_running ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>Memcached version</td>
-					<td><?php echo ($memcached_version ? $memcached_version : 'N/A'); ?></td>
-				</tr>
-			</table>
-
-			<h3>PHP Modules</h3>
-			<table class="table table-striped">
-				<tr>
-					<td>MySQL</td>
-					<td><i class="icon-<?php echo (class_exists('mysqli') ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>CURL</td>
-					<td><i class="icon-<?php echo (function_exists('curl_init') ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>mcrypt</td>
-					<td><i class="icon-<?php echo (function_exists('mcrypt_encrypt') ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>memcached</td>
-					<td><i class="icon-<?php echo (class_exists('Memcached') ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-
-				<tr>
-					<td>gd</td>
-					<td><i class="icon-<?php echo (function_exists('imagecreate') ? 'ok' : 'remove'); ?>"></i></td>
-				</tr>
-			</table>
-
-			<h3>MySQL credentials</h3>
-			<table class="table table-striped">
-				<tr>
-					<td>Hostname</td>
-					<td>localhost</td>
-				</tr>
-
-				<tr>
-					<td>Username</td>
-					<td>root</td>
-				</tr>
-
-				<tr>
-					<td>Password</td>
-					<td>root</td>
-				</tr>
-
-				<tr>
-					<td colspan="2"><em>Note: External access is enabled! Just use <strong><?php echo $_SERVER['SERVER_ADDR'] ?></strong> as host.</em></td>
-				</tr>
-			</table>
-		</div>
-
-		<div id="push"></div>
-	</div>
-
-	<div id="footer">
-		<div class="container">
-			<p class="muted credit"><a href="https://github.com/MiniCodeMonkey/Vagrant-LAMP-Stack" target="_blank">Vagrant LAMP Stack</a> by <a href="https://github.com/MiniCodeMonkey" traget="_blank">Code Monkey</a>.</p>
-		</div>
-	</div>
-</body>
-</html>
+}

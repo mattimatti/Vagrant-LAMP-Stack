@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+	<link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet/less" type="text/css" href="/jwysiwyg/jquery.wysiwyg.less">
+	
+	<script src="/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/bootstrap.min.js" type="text/javascript" charset="UTF-8"></script>
+	
+	
+	
+	<script src="/jwysiwyg/less-1.2.2.js" type="text/javascript" charset="UTF-8"></script>
+	<script src="/jwysiwyg/jquery.wysiwyg.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/jwysiwyg/defaults.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+	//<![CDATA[
+		$(document).ready(function(){
+			$('#editor').wysiwyg({autoGrow:true, controls:"bold,italic,|,undo,redo"});
+		});
+	//]]>
+	</script>
+	
+	<style type="text/css" media="screen">
+		#container{ width:600px; }
+		textarea{ width:500px; height:300px; }
+	</style>
+</head>
+<body>
+	<div id="container">
+		<textarea id="editor"></textarea>
+	</div>
+</body>
+</html>

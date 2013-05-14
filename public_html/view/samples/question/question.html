@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+<title>{{ category.name }}: {{ question.getQuestion() }}</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <link rel="apple-touch-startup-image" href="/ico/novartis.png" />
+
+<script type="text/javascript">
+  var question_id = {{ question.id  }} ; 
+  var maxRisp = {{question.max_answers}} ;
+</script>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+
+</head>
+<body id="1" class="pat{{ category.id }}">
+
+<div id="nh_wrapper">
+
+
+		<div id="col_aside">
+		
+			         <div id="top_decor"><a href="/" id="pn_home"><img src="/images/home_btn.png" style="margin-left:60px; margin-top: 10px;"/></a></div>
+		
+		
+							<h1>{{ category.name }} <small style="font-size:14px; line-height:1.5em; vertical-align:super;">†</small></h1>
+							<div id="short_data">
+							    {% trans %}Age{% endtrans %}: {{ category.age }}<br>
+							    {% trans %}Sex{% endtrans %}: {{ category.sex }}<br>
+							    {% trans %}Weight{% endtrans %}: {{ category.weight }}<br>
+							    {% trans %}FEV<sub>1</sub>{% endtrans %}:<small style="font-size:10px;">{{ question.getFev() }}</small>
+							    <!-- {% trans %}FEV{% endtrans %}<sub>1</sub>: {{ category.fev }} -->
+							</div>
+							<div id="long_description" class="long_description">
+							{% autoescape false %} 
+							    {{ category.getDescription() }}
+							    {% endautoescape %}
+							</div>
+							
+							<div id="cases_nav" style="height: 300px; width:160px; text-align: center; ">
+               
+               {% for case in cases %}
+               {% if case.id != category.id %}
+				            {% if loop.last %}
+				                <div class="last" style=" margin-top: 10px;">
+				             {% else %} 
+				                 <div style="border-bottom: 3px solid #EC8026; margin-top: 10px;">
+				              {% endif %} 
+				                   <a href="/start/{{case.id}}/1">
+				                    <img src="/images/ico_pat{{case.id}}.png" alt="{{case.name}}"/>
+				                     </a>
+				                    <div class="" style="text-align: center; width:150px">
+				                    <span class="" style="line-height: 33px;" >{{case.name}}</span>
+				                    </div>
+				                    
+				               
+				                
+				            </div>
+				            {% endif %} 
+				           {% endfor %} 
+              </div>
+		
+		
+		</div><!-- /#col_aside-->
+    
+    
+    <div id="col_content">
+    
+        <ul id="page_nav">
+
+        </ul>
+        
+        {% include question.layout %}
+        
+        <!-- RESULTS -->
+        <div id="results">
+          <p id="graph_legend">
+              <span id="orange_sq">&nbsp;</span> {% trans %}Your answers{% endtrans %}
+            </p>
+          <p id="result_intro">
+             {% trans %}The most commonly selected question topics were{% endtrans %}:
+            </p>
+                        
+            <!-- SCROLL UP ARROW -->
+            <a class="repl scrollArrows" href="javascript:;" id="scrollUp_btn">{% trans %}scroll up{% endtrans %}</a>
+            {% autoescape false %} 
+            <!-- GRAFICO -->
+            <div id="graph_area">
+              <ul id="lastQuestion" class="answerList resultsBarsBox">
+                 {% for answer in question.getAllAnswers() %}
+                 	{% if answer.hasAnswers() %}
+                 	{% else %}
+                    <li><a href="javascript:;" data_answer_id="{{ answer.id  }}" class="answer result">{{ answer.getAnswer() }}</a></li>
+                    {% endif %}
+                {% endfor %}
+              </ul>
+          </div><!-- /#graph_area-->
+          {% endautoescape %} 
+            
+            <!-- /SCROLL DOWN ARROW -->
+            <a class="repl scrollArrows" href="javascript:;" id="scrollDown_btn">{% trans %}scroll down{% endtrans %}</a>
+
+          
+          <a href="{{ nextpage }}" id="btn_next" class="btn_continue"> {% trans %}Continue{% endtrans %}</a>
+        </div><!-- /#results-->
+        <!-- /RESULTS -->
+        
+  </div><!-- /#results_box-->
+
+</div><!-- /#nh_wrapper-->
+<div class="bottom_note"><small style="font-size:xxs; line-height:1.5em; vertical-align:super;">†</small>{% trans %}Fictitious patient. Individual cases may not be representative of the general population.{% endtrans %}</div>
+
+<script type="text/javascript" src="/js/jquery-1.5.2.min.js" ></script>
+<script type="text/javascript" src="/js/global.js" ></script>
+<script type="text/javascript" src="/js/jquery.tinysort.js" ></script>
+<script type="text/javascript" src="/js/scroll.js" ></script>
+<script type="text/javascript" src="/js/jquery.stayInWebApp.min.js" ></script>
+ <script type="text/javascript">
+ $(function() {
+	    $.stayInWebApp();
+	});
+ </script>
+  {% block pagescript %}
+  {% endblock %}
+
+</body>
+</html>

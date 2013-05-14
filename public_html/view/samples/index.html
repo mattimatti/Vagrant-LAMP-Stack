@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{% trans %}Cystyc Fibrosis{% endtrans %}</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <link rel="apple-touch-startup-image" href="/ico/splash.png" />
+    
+    <link rel="apple-touch-icon" href="/ico/novartis.png"/>
+    
+     <meta name="format-detection" content="telephone=no" />
+    
+    <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> -->
+ 
+ <script>
+    (function () {
+      var filename = navigator.platform === 'iPad' ?
+        'splash-big.png' : 'splash.png';
+      document.write(
+        '<link rel="apple-touch-startup-image" ' +
+              'href="img/' + filename + '" />' );
+    })();
+  </script>
+
+</head>
+<body id="homepage">
+
+<div id="nh_wrapper">
+  <div id="home_header" style="margin-top:-8px;">
+      <img src="images/home_header.jpg" alt="Cystic fibrosis. Case Study" class="display_block" />
+    </div>
+    
+    <div id="home_content" style="margin-top:-8px;">
+        <p id="cta_msg">
+          <span class="fs_26">{% trans %}Please select</span> one of the CF patient cases below{% endtrans %}
+        </p>
+        <p>
+            {% trans %}Throughout the case, you will be asked about factors you would consider when managing the specific patient. You will also be provided with a summary of the responses of healthcare professional peers who have chosen the same patient case.{% endtrans %}
+        </p>
+        <ul id="patients_list" style="margin-top:15px;">
+        
+        
+          {% for case in cases %}
+            
+            {% if loop.last %}
+                <li class="last">
+             {% else %} 
+                 <li>
+              {% endif %} 
+                <a href="start/{{case.id}}/1" id="start_pat1" class="btn_start" >
+                    <img src="images/medium_pat{{case.id}}.jpg" alt="{{case.name}}" width="185" height="110" />
+                    <div class="" style="text-align: center; width:150px">
+                    <span class="" style="line-height: 33px;" >{{case.name}}<small style="font-size:14px; line-height:1.5em; vertical-align:super;">†</small>, {{case.age}} </span>
+                    </div>
+                    
+                </a>
+                <div class="short_data">
+                    {% trans %}Age{% endtrans %}: <span>{{case.age}}</span><br>
+                    {% trans %}Sex{% endtrans %}: <span>{{case.sex}}</span><br>
+                    {% trans %}Weight{% endtrans %}: <span>{{case.weight}}</span><br>
+                    {% trans %}FEV<sub>1</sub>{% endtrans %}: <span><small style="font-size:10px;">{{case.fev}} {% trans %}predicted{% endtrans %}</small></span>
+                </div>
+                
+                <div class="long_description home">
+                   {% autoescape false %} 
+                    {{case.getDescription()}}
+                    {% endautoescape %}
+                </div>
+                
+            </li>
+           {% endfor %} 
+            
+
+            
+            
+        </ul>
+        <span id="home_note"><small style="font-size:xxs; line-height:1.5em; vertical-align:super;">†</small>{% trans %}Fictitious patient. Individual cases may not be representative of the general population.{% endtrans %}</span>
+    </div><!-- /#home_content-->
+    <div id="home_footer">
+      <div id="address">
+            Novartis Pharma Canada inc. <br/>
+            Dorval (Québec)  H9S 1A9
+        </div>
+        
+      <span id="p_date"><br/>{% trans %}Printed in Canada:{% endtrans %} {% trans %}TOB-12-09-5536140{% endtrans %}</span>
+        
+        <span id="copyrights"><br/>&copy; Novartis Pharma Canada inc. 2012</span>
+    </div><!-- /#home_footer-->
+     <div id="logout" ><a href="/logout">{% trans %}Logout{% endtrans %}</a></div>
+</div><!-- /#nh_wrapper-->
+
+<script type="text/javascript" src="js/jquery-1.5.2.min.js" ></script>
+<script type="text/javascript" src="js/global.js" ></script>
+<script type="text/javascript" src="/js/jquery.stayInWebApp.min.js" ></script>
+ <script type="text/javascript">
+ $(function() {
+      $.stayInWebApp();
+  });
+ </script>
+</body>
+</html>

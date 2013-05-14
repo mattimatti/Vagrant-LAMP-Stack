@@ -1,0 +1,50 @@
+       {% autoescape false %} 
+        <!-- QUESTIONS -->
+      <div id="content" >
+        
+          <!-- domanda -->
+          <p id="question">
+              {% trans %}Select the most important factors you would consider when determining how to manage this patient{% endtrans %}<sup>†</sup>
+                <!-- <span id="how_many"></span> -->
+            </p>
+            
+            
+            
+            <!-- risposte -->
+            
+            
+                {% for answer in question.getAnswers() %}
+                         
+						            <div id="col_{{loop.index}}" class="col_quest">
+						              <div class="col_head">
+						                  {{ answer.getAnswer() }}
+						                </div>
+						                 <ul class="answerList questionList">
+						                {% if answer.hasAnswers() %}
+						               
+						                    
+						                    {% for subanswer in answer.subAnswers() %}
+						                    
+											                    {% if subanswer.hasAnswers() %}
+											                    <li>
+											                    <span>{{ subanswer.getAnswer()  }}</span>
+											                        <ul>
+											                            {% for subsubanswer in subanswer.subAnswers() %}
+											                                   <li><a href="javascript:;" data_answer_id="{{ subsubanswer.id  }}" class="answer">{{ subsubanswer.getAnswer()  }}</a></li>
+											                            {% endfor %}
+											                        </ul>
+											                    </li>
+											                    {% else %}
+											                         <li><a href="javascript:;" data_answer_id="{{ subanswer.id  }}" class="answer">{{ subanswer.getAnswer()  }}</a></li>
+											                    {% endif %}
+						                   {% endfor %}
+						               {% endif %}
+						               </ul>
+						            </div>
+                  {% endfor %}
+            
+          
+            <a href="#" onClick="javascript:goToResult();" id="btn_show_results" class="btn_continue">{% trans %}Continue{% endtrans %}</a>
+        </div><!-- /#question_box-->
+        <!-- /QUESTIONS -->
+{% endautoescape %} 

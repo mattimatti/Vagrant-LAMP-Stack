@@ -1,0 +1,111 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+
+
+
+<!--  form block -->
+
+<div class="row">
+<div class="span12">
+<a href="/admin/questions/{{category.id}}">Case: {{category.name}}</a> / <a href="/admin/question/detail/{{question.id}}">Question: {{question.question_en}}</a>
+<br/>
+<br/>
+<form class="well" method="post">
+        
+        
+        <label>Answer English</label>
+        <textarea name="answer_en" class="rich span6" rows="3">{{answer.answer_en}}</textarea>
+        
+        <label>Answer French</label>
+        <textarea name="answer_fr" class="rich span6" rows="3">{{answer.answer_fr}}</textarea>
+        
+
+        <br/>
+        
+        <button type="submit" class="btn">Submit</button>
+        
+      </form>
+
+</div>
+</div>
+
+<!--  #form block -->
+
+
+<h3>Sub Answers<span> <small><a href="/admin/answers/addsubanswer/{{answer.id}}">Add SubAnswer</a></small></span></h3>
+{%if answers %}
+<div class="alert">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Warning!</strong> Drag the rows up and down to adjust answers order.
+</div>
+
+<table id="answerstable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>English</th>
+            <th>French</th>
+            <th>Order</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="sortcont">
+          {% for answer in answers %}
+          <tr id="elm_{{answer.id}}">
+            <td>{{answer.id}}</td>
+            <td>{{answer.answer_en}}</td>
+            <td>{{answer.answer_fr}}</td>
+            <td>{{answer.sorting}}</td>
+            <td><a href="/admin/answer/detail/{{answer.id}}">edit answer</a></td>
+            <td><a href="/admin/answer/delete/{{answer.id}}" class="confirm">delete</a></td>
+          </tr>
+           {% endfor %}
+          
+        </tbody>
+      </table>
+{% else %}
+<div class="alert">
+  <button class="close" data-dismiss="alert">×</button>
+  You don't have Subanswers.
+</div>
+
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block pagescript %}
+<script type="text/javascript">
+    $(function(){
+
+
+    	
+      $("#answerstable tbody.sortcont").sortable(
+              {
+                  update : function () {
+                  serial = $(this).sortable('serialize');
+                  console.log(serial);
+                  $.ajax({
+                      url: "/admin/answers/sort/",
+                      type: "post",
+                      data: serial,
+                      error: function(){
+                          alert("theres an error with AJAX");
+                      }
+                  });
+                }
+              });
+
+            
+        $("#answerstable tbody.sortcont").disableSelection();
+
+
+      
+    });
+</script>
+{% endblock %}
+

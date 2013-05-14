@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CF Patient Cases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link type="text/css" href="/css/custom_theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link type="text/css" href="/css/bootstrap.css" rel="stylesheet">
+    <link type="text/css" href="/css/chosen.css" rel="stylesheet">
+    <link type="text/css" href="/css/admin.css" rel="stylesheet">
+    <link type="text/css" href="/css/jquery.asmselect.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body class="admin">
+    
+    
+    <div class="navbar navbar-fixed-top">
+    
+    <!-- <img src="/images/home_header.jpg"/> -->
+    
+    
+    <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">CF Patient Cases </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              
+              {% if role == "superadmin" %}
+              <li><a href="/admin/questions">Case studies</a></li>
+              {% endif %}
+              <li><a href="/admin/users">Representatives</a></li>
+              <li><a href="/admin/results/">Results</a></li>
+              <li><a href="/admin/settings">Change Administration Password</a></li>
+              {% if role == "superadmin" %}
+              <li><a href="/admin/cleanup/">Cleanup</a></li>
+              {% endif %}
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+    {% block content %}
+
+    {% endblock %}
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="/js/validator_override.js"></script>
+    <script type="text/javascript" src="/js/chosen.jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.asmselect.js"></script>
+    <script type="text/javascript" src="/js/jquery.stayInWebApp.min.js" ></script>
+		 <script type="text/javascript">
+		 $(function() {
+		      $.stayInWebApp();
+		  });
+		 </script>
+    <script type="text/javascript">
+
+    $('#editor').wysiwyg({autoGrow:true, controls:"bold,italic,|,undo,redo"});
+    
+    $(".asm-select").asmSelect({
+        addItemTarget: 'bottom',
+        animate: false,
+        highlight: true,
+        sortable: true
+      });
+    
+    
+          $(".chzn-select").chosen();
+          $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+
+          $("#sortabletable").tablesorter();
+          //$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});          
+        </script>    
+    
+  {% block pagescript %}
+  {% endblock %}
+  </body>
+</html>

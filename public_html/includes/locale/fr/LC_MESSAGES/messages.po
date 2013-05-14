@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pipeline\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-04 20:10+0200\n"
+"PO-Revision-Date: 2012-09-07 15:05+0100\n"
+"Last-Translator: Matteo <mmonti@gmail.com>\n"
+"Language-Team: Waau <mmonti@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+
+#: tmp/cache//03/1c/401f6e0339e295087553886bd428.php:74
+msgid "Login"
+msgstr ""
+
+#: tmp/cache//03/1c/401f6e0339e295087553886bd428.php:78
+msgid "to the Cystic Fibrosis Patient Cases"
+msgstr "Cas de patients atteints de fibrose kystique"
+
+#: tmp/cache//03/1c/401f6e0339e295087553886bd428.php:87
+msgid "English"
+msgstr "Anglais"
+
+#: tmp/cache//03/1c/401f6e0339e295087553886bd428.php:93
+msgid "Français"
+msgstr ""
+
+#: tmp/cache//03/1c/401f6e0339e295087553886bd428.php:106
+msgid "Enter"
+msgstr "Entrer"
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:25
+#: tmp/cache//51/61/1123b1b0d313cc04119d6f92ad31.php:25
+msgid "Cystyc Fibrosis"
+msgstr "Fibrose Kystique"
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:66
+msgid "Please select</span> one of the CF patient cases below"
+msgstr ""
+"Veuillez sélectionner</span> un des cas de patients atteints de FK ci-"
+"dessous."
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:72
+msgid ""
+"Throughout the case, you will be asked about factors you would consider when "
+"managing the specific patient. You will also be provided with a summary of "
+"the responses of healthcare professional peers who have chosen the same "
+"patient case."
+msgstr ""
+"Au cours de ladescription du cas, vous devrez répondre à des questions sur "
+"les facteurs que vousprendriez en compte pour la prise en charge du patient "
+"que vous aurez choisi. Vouspourrez aussi parcourir un résumé des réponses "
+"d’autres professionnels de la santé quiont choisi le même cas que vous."
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:142
+msgid "Age"
+msgstr "Âge"
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:149
+msgid "Sex"
+msgstr "Sexe"
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:156
+msgid "Weight"
+msgstr "Poids"
+
+#: tmp/cache//09/cb/a44c8e8c0d36c046c817c445d27d.php:210
+msgid "Production date"
+msgstr "Date de production"
+
+#: tmp/cache//b1/de/1c3d92f5b714387069401f4fc7fe.php:28
+msgid ""
+"Select the most important factors you would consider when determining how to "
+"manage this patient"
+msgstr ""
+"Sélectionnez les facteurs que vous estimez les plus importants pour "
+"déterminer la façon de prendre en charge ce patient"
+
+#: tmp/cache//b1/de/1c3d92f5b714387069401f4fc7fe.php:163
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:283
+#: tmp/cache//c5/56/704b9c860648ccfe6d0287b3833d.php:137
+msgid "Continue"
+msgstr "Continuer"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:220
+msgid "Your answers"
+msgstr "Vos réponses"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:226
+msgid "The most commonly selected question topics were"
+msgstr "Les sujets de questions les plus souvent sélectionnés étaient"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:233
+msgid "scroll up"
+msgstr "défiler vers le haut-"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:270
+msgid "scroll down"
+msgstr "défiler vers le bas"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:281
+msgid "Start again"
+msgstr "Reprendre"
+
+#: tmp/cache//b4/96/b9518d4c78b319bb800f10f065a2.php:294
+msgid ""
+"Fictitious patient. Individual cases may not be representative of the "
+"general population."
+msgstr ""
+"Patient fictif. Les cas individuels pourraient ne pas être représentatifs de "
+"la population générale."
+
+#: tmp/cache//ef/2a/4dd753d78f2c7f4c49cabdbcef73.php:39
+msgid "Insert Interview Info"
+msgstr "Insérez Infos Interview"
+
+#: tmp/cache//ef/2a/4dd753d78f2c7f4c49cabdbcef73.php:48
+msgid "Select Specialization"
+msgstr "Sélectionnez spécialisation"
+
+#: tmp/cache//ef/2a/4dd753d78f2c7f4c49cabdbcef73.php:81
+msgid "Select Region"
+msgstr "Sélectionnez la région"
+
+#: tmp/cache//ef/2a/4dd753d78f2c7f4c49cabdbcef73.php:151
+msgid "GO TO PATIENT CASES"
+msgstr "Commencer"
+
+msgid "predicted"
+msgstr "de la valeur théorique"
+
+msgid "FEV<sub>1</sub>"
+msgstr "VEMS"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "TOB-12-09-5536140"
+msgstr "TOB-12-09-5536141"
+
+msgid "Start Again"
+msgstr "Reprendre"
+
+msgid "References"
+msgstr "Références"
+
+msgid "GO BACK"
+msgstr "ARRIÈRE"

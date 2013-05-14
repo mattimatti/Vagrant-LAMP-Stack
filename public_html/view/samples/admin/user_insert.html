@@ -1,0 +1,44 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+<!--  form block -->
+
+<div class="row">
+<div class="span12">
+
+<h3>Insert/Edit Representative</h3>
+{%if flash.error %}
+<div class="alert alert-error">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> {{flash.error}}.
+</div>
+{% endif %}
+<form class="well validate" method="post">
+        
+        <label>First Name</label>
+        <input type="text" name="firstname" class="span6" placeholder="First Name"  value="{{user.firstname}}">
+        
+        <label>Last Name</label>
+        <input type="text" name="lastname" class="span6" placeholder="last name"  value="{{user.lastname}}">
+        
+        <label>UserName</label>
+        <input type="text" name="username" class="span6" placeholder="username"  value="{{user.username}}">
+
+        <label>Password</label>
+        <input type="text" name="password" class="span6" placeholder="password"  value="{{user.password}}">
+
+        <br/>
+        <button type="submit" class="btn">Submit</button>
+        <span><a href="/admin/users/">cancel</a></span>
+      </form>
+
+</div>
+</div>
+
+<!--  #form block -->
+
+
+
+{% endblock %}
+

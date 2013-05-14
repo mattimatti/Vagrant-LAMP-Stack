@@ -1,0 +1,46 @@
+       {% autoescape false %} 
+        <!-- QUESTIONS -->
+      <div id="content" 
+      {% if question.density == 3 %} 
+       class="smallCharList" 
+      {% elseif question.density == 2 %} 
+      class="mediumCharList"
+      {% endif %} >
+       
+          <!-- domanda -->
+          <p id="question">
+             {{ question.getQuestion() }} {{question.denisty}}
+                
+                <span id="how_many"></span>
+            </p>
+            <!-- risposte -->
+            <ul class="answerList questionList">
+            
+				         {% for answer in question.getAnswers() %}
+				                  
+				                {% if answer.hasAnswers() %}
+				                <li><span class="subanswer">{{ answer.getAnswer() }}</span>
+				                  <ul>
+				                   {% for subanswer in answer.subAnswers() %}
+				                      <li><a href="javascript:;" data_answer_id="{{ subanswer.id  }}" class="answer">{{ subanswer.getAnswer()  }}</a></li>
+				                   {% endfor %}
+				                  </ul>
+				                  </li>
+				                {% else %}
+
+				                <li><a href="javascript:;" data_answer_id="{{ answer.id  }}" class="answer">{{ answer.getAnswer()  }}</a></li>
+				                {% endif %}
+				          
+				          {% endfor %}
+            
+                {% for answer in answers %}
+                    
+                {% endfor %}
+               
+            </ul>
+            
+            <a href="javascript:;" id="btn_show_results" class="btn_continue">{% trans %}Continue{% endtrans %}</a>
+        </div><!-- /#question_box-->
+        <!-- /QUESTIONS -->
+        
+        {% endautoescape %} 

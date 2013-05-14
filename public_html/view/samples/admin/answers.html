@@ -1,0 +1,145 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+
+<!--  form block -->
+
+<div class="row">
+<div class="span12">
+
+<a href="/admin/questions/{{category.id}}">Case: {{category.name}}</a> / {{question.question_en}}
+<br/>
+<br/>
+
+<form class="well" method="post">
+        
+        
+        <label>English</label>
+        <textarea name="question_en" class="rich span10" rows="2">{{question.question_en}}</textarea>
+        
+        <label>Max Answers</label>
+        <input type="text" name="max_answers" id="max_answers" value="{{question.max_answers}}"/>        
+        
+        <div><a href="javascript:;" class="expandform">more fields</a></div>
+        
+        
+        
+        <label>French</label>
+        <textarea name="question_fr" class="rich span10" rows="2">{{question.question_fr}}</textarea>
+        
+        <label>FEV en</label>
+        <textarea name="fev_en" class="rich span6" rows="1">{{question.fev_en}}</textarea>
+
+        <label>FEV fr</label>
+        <textarea name="fev_fr" class="rich span6" rows="1">{{question.fev_fr}}</textarea>
+        
+        <div id="edit_form" class="hide">
+        <!-- put here hidden fields -->
+        </div>
+        
+        <br/>
+        <button type="submit" class="btn">Submit</button>
+        <span> <a href="javascript:;" class="constrainform">cancel</a></span>
+        
+      </form>
+
+</div>
+</div>
+
+<!--  #form block -->
+
+<div class="row">
+<div class="span12">
+<h3>Answers<span> <small><a href="/admin/answers/add/{{question.id}}">Add Answer</a></small></span></h3>
+<div class="alert">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Warning!</strong> Drag the rows up and down to adjust answers order.
+</div>
+<table id="answerstable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>English</th>
+            <th>French</th>
+            <th>Order</th>
+            <th>Options</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="sortcont">
+          {% for answer in answers %}
+          <tr id="elm_{{answer.id}}">
+            <td>{{answer.id}}</td>
+            <td>{{answer.answer_en}}</td>
+            <td>{{answer.answer_fr}}</td>
+            <td>{{answer.sorting}}</td>
+            <td>{{answer.subAnswersCount()}}</td>
+            
+            <td><a href="/admin/answer/detail/{{answer.id}}">edit answer</a></td>
+            <td><a href="/admin/answer/delete/{{answer.id}}" class="confirm">delete</a></td>
+          </tr>
+           {% endfor %}
+          
+        </tbody>
+      </table>
+</div>
+</div>
+{% endblock %}
+
+
+{% block pagescript %}
+<script type="text/javascript">
+    $(function(){
+      // bind change event to select
+      $('#dynamic_select').bind('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          return false;
+      });
+
+      $("#answerstable tbody.sortcont").sortable(
+              {
+                  update : function () {
+                  serial = $(this).sortable('serialize');
+                  console.log(serial);
+                  $.ajax({
+                      url: "/admin/answers/sort/",
+                      type: "post",
+                      data: serial,
+                      error: function(){
+                          alert("theres an error with AJAX");
+                      }
+                  });
+                }
+              });
+             
+             
+
+
+
+            
+        $("#answerstable tbody.sortcont").disableSelection();
+
+      $(".expandform").click(function(){
+          $("#edit_form").toggle();
+          $(".expandform").toggle();
+      });
+
+      $(".constrainform").click(function(){
+          $("#edit_form").toggle();
+          $(".expandform").toggle();
+      });
+      $(".confirm").click(function(e){
+         
+         if(!confirm("Are you sure you want to delete?"))e.preventDefault();
+      });
+
+      
+    });
+</script>
+{% endblock %}
+

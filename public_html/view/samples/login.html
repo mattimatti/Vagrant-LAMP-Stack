@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CF Patient Cases Logins</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; 
+      }
+      .container {
+        width: 400px;
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; 
+        -webkit-border-radius: 10px 10px 10px 10px;
+           -moz-border-radius: 10px 10px 10px 10px;
+                border-radius: 10px 10px 10px 10px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+    .login-form {
+      margin-left: 65px;
+    }
+  
+    legend {
+      margin-right: -50px;
+      font-weight: bold;
+      color: #404040;
+    }
+
+    </style>
+
+</head>
+<body>
+  <div class="container">
+      <div class="content">
+          <div class="row">
+              <div class="login-form">
+                  <h2>{% trans %}Login{% endtrans %}</h2>
+                  <p>{% trans %}Login to the Cystic Fibrosis Patient Cases{% endtrans %}</p>
+                  
+                  <form action="/login" method="post">
+                      <fieldset>
+                        <div class="control-group">
+                          <div class="controls">
+                              <label class="checkbox inline">
+                                <input type="radio" name="lang" checked="checked" id="inlineCheckbox1" value="en"> {% trans %}English{% endtrans %}
+                              </label>
+                              <label class="checkbox inline">
+                                <input type="radio" name="lang" id="inlineCheckbox2" value="fr"> {% trans %}Français{% endtrans %}
+                              </label>
+                            </div>  
+                            </div>
+                          <div class="control-group">
+                              <input type="text" name="user" placeholder="User">
+                          </div>
+                          <div class="control-group">
+                              <input type="password"  name="password" placeholder="Password">
+                          </div>
+                          <button class="btn btn-primary" type="submit">{% trans %}Enter{% endtrans %}</button>
+                      </fieldset>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div> <!-- /container -->
+</body>
+</html>

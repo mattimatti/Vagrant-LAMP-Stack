@@ -1,0 +1,25 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<h3>Change Adiministration Password</h3>
+<br/>
+<form action="/admin/settings/" class="well form-inline" method="post">
+{%if flash.error %}
+<div class="alert alert-error">
+  <button class="close" data-dismiss="alert">×</button>
+  {{flash.error}}.
+</div>
+{% endif %}
+{%if flash.success %}
+<div class="alert">
+  <button class="close" data-dismiss="alert">×</button>
+  {{flash.success}}.
+</div>
+{% endif %}
+        <input type="password" name="oldpass" class="input-medium" placeholder="Old Password">
+        <input type="password" name="newpassword" class="input-medium" placeholder="New Password">
+        <input type="password" name="newpassword-confirm" class="input-medium" placeholder="New Password Confirm">
+        <button type="submit" class="btn btn-primary">Change Password</button>
+      </form>
+{% endblock %}
+

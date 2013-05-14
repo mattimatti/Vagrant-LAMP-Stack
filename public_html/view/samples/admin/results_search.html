@@ -1,0 +1,323 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+
+<div class="row">
+
+<form id="filterform" class="form-inline " method="post">
+
+
+					<div class="span12">
+					       <h3>Results</h3>
+					      <p>Select Patient: <span> <select name="case" id="case" class="span2" >
+                  <option  value="">Please Select</option>  
+                  {% for case in cases %}
+                       <option  {% if ( selected_case.id == case.id ) %} selected="selected" {% endif %} value="{{ case.id}}">{{ case.name }}</option>   
+                  {% endfor %}
+                  </select>
+                  </span></p>
+                  
+                  <br/>
+					</div>
+
+{%if flash.error %}
+<div class="alert alert-error">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> {{flash.error}}.
+</div>
+{% endif %}
+
+          <div class="span12 well">
+
+					<h4>Filter Results</h4>
+					<br/>
+					
+
+					        <a class="btn" href="javascript:;" id="togglerepresentatives">Representatives</a>
+
+                  
+					        <select name="area" id="area" class="span3" >
+					        <option  value="">Specialization</option>  
+					        {% for area in areas %}
+					             <option {% if (selected_area.id == area.id ) %} selected="selected" {% endif %} value="{{ area.name}}">{{ area.name }}</option>   
+					        {% endfor %}
+					        </select>
+					
+					
+					         <input type="hidden" name="region" id="region" value=""></input>
+					         
+					         <!-- <a class="btn" href="javascript:;" id="togglemap">Region</a>-->
+					         
+					        <select name="region" id="region" class="span2" >
+					        <option  value="">Region</option>  
+					        {% for region in regions %}
+					             <option data_region="{{region.short}}" {% if (selected_region.id == region.id ) %} selected="selected" {% endif %} value="{{ region.name}}">{{ region.name }}</option>   
+					        {% endfor %}
+					        </select>
+					       
+
+                 <!-- <label for="city">What are your favorite cities?</label>
+					        <select name="city" id="city"  class=" span2 " >
+					        <option  value="">City</option>  
+					        {% for city in cities %}
+					             <option data_region="{{city.state}}" {% if ( selected_city.name == city.name ) %} selected="selected" {% endif %} value="{{ city.name}}">{{ city.name }}</option>   
+					        {% endfor %}
+					        </select>
+					         --> 
+					        <button class="btn btn-primary">Search</button>
+        
+  
+  
+                  <div class="row" style="margin-top:20px">
+                  
+                  
+                  
+
+
+
+
+
+
+				           <div id="repselector" class="span3 hide">
+				    
+
+														<br/>
+														<input type="text" class="span3" id="FilterTextBox" placeholder="Filter representatives Table" />
+
+												    <table class=" table table-striped filterable">
+												        <thead>
+												          <tr>
+												            <th><input type="checkbox" id="selectall"/></th>
+												            <th>Name</th>
+												            <th>Surname</th>
+												          </tr>
+												        </thead>
+												        <tbody>
+												          {% for user in users %}
+												          <tr>
+												            <td><input type="checkbox" name="representative[]" value="{{user.id}}" class="rep" id="rep_{{user.id}}"/></td>
+												            <td><a href="/admin/users/detail/{{user.id}}">{{user.firstname}}</a></td>
+												            <td>{{user.lastname}}</td>
+												          </tr>
+												          {% endfor %}
+												        </tbody>
+												      </table>
+
+															 
+																		<div class="pagination">
+																		 {% if (has_paging) %}
+																		  <ul>
+																		  {% if (start_idx > 0) %}
+																		    <li><a href="?start={{start_idx-1}}">Prev</a></li>
+																		  {% endif %}
+																		   {% for i in range(1, totalpages) %}
+																		    <li {% if (i-1 ==  start_idx) %} class="active" {% endif %}>
+																		      <a href="?start={{i-1}}">{{ i }}</a>
+																		    </li>
+																		     {% endfor %}
+																		     
+																		    {% if (start_idx < totalpages-1) %}
+																			    <li><a href="?start={{start_idx+1}}">Next</a></li>
+																			  {% endif %}
+																		    
+																		  </ul>
+																		  {% endif %}
+																		</div>      
+            </div>
+            
+            <!--  -->
+                  <div id="mapselector" class="hide span4">
+                    <div class="mapWrapper" style="margin:0 auto; width:400px; position:relative;">
+                      <div id="map" style="float:left; clear:both; width:300px; height:220px;"></div>
+                    </div>
+                  </div>
+            
+            
+            </div><!-- #row -->
+            
+       </div>
+</form>
+</div>
+<div class="row">
+<div class="span12">
+      
+      
+      {% if interviews|length == 0 %}
+<div class="alert ">
+  <button class="close" data-dismiss="alert">×</button>
+  No results found matching selected criteria.
+</div>
+      {% else %}
+      
+      {% autoescape false %}
+      
+      
+      <h3>Found {{interviews|length}} interview/s matching selected criteria</h3>
+        <br/>
+        <ul id="adminresults">
+          {% for question in questions %}
+          <li class="question">{{ question.question_en }}</li>
+          <ul>
+          {% for answer in question.getAnswers() %}
+                  
+			          {% if answer.hasAnswers() %}
+			          <li class="answer main">{{ answer.answer_en }}</li>
+			            <ul>
+			             {% for subanswer in answer.subAnswers() %}
+			                <li class="answer">{{ subanswer.answer_en }}<span class="valore">{{subanswer.subAnswersCountByInterviewIds(interviews_ids)}}</span></li>
+			             {% endfor %}
+			            </ul>
+			          {% else %}
+			          <li class="answer">{{ answer.answer_en }}<span class="valore">{{answer.subAnswersCountByInterviewIds(interviews_ids)}}</span></li>
+			          {% endif %}
+          
+          {% endfor %}
+          </ul>
+          {% endfor %}
+        </ul>
+                    
+                  
+                  
+      
+      
+      
+      <table id="sortabletable" class="table table-striped sorter tablesorter filterable table-bordered hide">
+        <thead>
+          <tr>
+            <th>Representative</th>
+            <th>Case Study</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for interview in interviews %}
+          <tr>
+            <td>{{ interview.getUser().firstname }} {{ interview.getUser().lastname }}</td>
+            <td><a href="{{ interview.getCase().id }}">{{ interview.getCase().name }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      
+      {% endautoescape %}
+      
+      
+      
+      {% endif %}
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block pagescript %}
+
+<script src="/js/raphael/raphael.js" type="text/javascript"></script>
+<script src="/js/raphael/scale.raphael.js" type="text/javascript"></script>
+<script src="/js/raphael/paths.js" type="text/javascript"></script>
+<script src="/js/raphael/map.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+
+function mapclicked(id){
+	 $("#region").val(id)
+	$("#filterform").submit();
+}
+
+
+
+$(function(){
+	 //add index column with all content.
+	 $(".filterable tr:has(td)").each(function(){
+	   var t = $(this).text().toLowerCase(); //all row text
+	   $("<td class='indexColumn'></td>")
+	    .hide().text(t).appendTo(this);
+	 });//each tr
+	 $("#FilterTextBox").keyup(function(){
+	   var s = $(this).val().toLowerCase().split(" ");
+	   //show all rows.
+	   $(".filterable tr:hidden").show();
+	   $.each(s, function(){
+	       $(".filterable tr:visible .indexColumn:not(:contains('"
+	          + this + "'))").parent().hide();
+	   });//each
+	 });//key up.
+
+      $(".confirm").click(function(e){
+         
+         if(!confirm("Are you sure you want to delete?"))e.preventDefault();
+      });
+
+      
+    $("#togglerepresentatives").click(function(){
+  	  $("#repselector").slideToggle();
+     });
+
+    $("#togglemap").click(function(){
+        $("#mapselector").slideToggle();
+       });
+    
+
+    
+    // changing region
+    $("#region").change(function(event,ui){
+  	   var key = $(event.currentTarget.selectedOptions[0]).attr("data_region");
+    	 $("#filterform").submit();
+  	});
+
+
+    // changing specialty
+    $("#case").change(function(event,ui){
+        $("#filterform").submit();
+    }); 
+    
+
+    // changing specialty
+    $("#area").change(function(event,ui){
+        $("#filterform").submit();
+    });	 
+
+    
+    // changing city 
+    $("#city").change(function(event,ui){
+        
+    	//$("#region").val("");
+    	//$("#filterform").submit();
+
+     });
+
+
+    // update selected representatives
+    
+    $(".rep").attr("checked",null);
+
+
+    
+    {% for selected_rep in selected_representative %}
+       $("#rep_{{selected_rep.id}}").attr("checked","checked");
+    {% endfor %}
+    
+
+    
+
+    
+	});//document.ready
+
+
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,158 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+
+
+<!--  selector block -->
+
+<div class="row">
+<div class=" span12">
+<h3>Case study: <span>
+<select id="dynamic_select">
+   {% for category in categories %}
+         <option value="/admin/questions/{{category.id}}" {% if (category_id == category.id) %} selected="selected" {% endif %} >{{category.name}}</option>
+  {% endfor %}
+</select>
+</span></h3>
+<br/>
+</div>
+</div>
+
+<!--  #selector block -->
+
+<!--  form block -->
+
+<div class="row">
+<div class="span12">
+
+<form class="well" method="post">
+        
+        
+        <label>Patient Name</label>
+        <input type="text" name="name" class="span6" placeholder="Patient name" value="{{category.name}}">
+        <div ><a href="javascript:;" class="expandform">edit patient</a></div>
+        <div id="edit_form" class="hide">
+        <label>Description</label>
+        <textarea name="description_en" class="rich span8" rows="5">{{category.description_en}}</textarea>
+        
+        <label>Description Fr</label>
+        <textarea name="description_fr" class="rich span8" rows="5">{{category.description_fr}}</textarea>
+        
+        
+        <label>Age</label>
+        <input type="text" name="age" class="span2" placeholder="Age"  value="{{category.age}}">
+
+        <label>Weight</label>
+        <input type="text" name="weight" class="span2" placeholder="Weight"  value="{{category.weight}}">
+
+        <label>Sex</label>
+        <input type="text" name="sex" class="span2" placeholder="Sex"  value="{{category.sex}}">
+
+
+        <br/>
+        
+        <button type="submit" class="btn">Submit</button>
+        <span><a href="javascript:;" class="constrainform">cancel</a></span>
+        </div>
+      </form>
+
+</div>
+</div>
+
+<!--  #form block -->
+
+<div class="row">
+<div class="span12">
+<h3>Questions<span> <small><a href="/admin/questions/add/{{category.id}}">Add Question</a></small></span></h3>
+<div class="alert">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Warning!</strong> Drag the rows up and down to adjust questions order.
+</div>
+<table id="questionstable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>English</th>
+            <th>French</th>
+            <th>Step</th>
+            <th>Answers</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class="sortcont">
+          {% for question in questions %}
+          <tr id="elm_{{question.id}}">
+            <td>{{question.id}}</td>
+            <td>{{question.question_en}}</td>
+            <td>{{question.question_fr}}</td>
+            <td>{{question.step}}</td>
+            <td>{{question.getAnswerCount()}}</td>
+            <td><a href="/admin/question/detail/{{question.id}}">edit question</a></td>
+            <td><a href="/admin/question/delete/{{question.id}}" class="confirm">delete</a></td>
+          </tr>
+           {% endfor %}
+          
+        </tbody>
+      </table>
+</div>
+</div>
+{% endblock %}
+
+
+{% block pagescript %}
+<script type="text/javascript">
+    $(function(){
+
+      // bind change event to select
+      $('#dynamic_select').bind('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          return false;
+      });
+
+      $("#questionstable tbody.sortcont").sortable(
+    	      {
+        	      update : function () {
+        	      serial = $(this).sortable('serialize');
+        	      console.log(serial);
+        	      $.ajax({
+            	      url: "/admin/questions/sort/",
+            	      type: "post",
+            	      data: serial,
+            	      error: function(){
+        	    	        alert("theres an error with AJAX");
+            	      }
+    			      });
+    			    }
+    	      });
+    			 
+    			 
+
+
+
+    		  
+      $("#questionstable tbody.sortcont").disableSelection();
+
+      
+
+      $(".expandform").click(function(){
+    	    $("#edit_form").toggle();
+    	    $(".expandform").toggle();
+      });
+
+      $(".constrainform").click(function(){
+          $("#edit_form").toggle();
+          $(".expandform").toggle();
+      });
+      $(".confirm").click(function(e){
+         
+         if(!confirm("Are you sure you want to delete?"))e.preventDefault();
+      });
+      
+    });
+</script>
+{% endblock %}
+

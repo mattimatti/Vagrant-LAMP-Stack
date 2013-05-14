@@ -1,0 +1,50 @@
+{% extends "layout_clean.html" %}
+
+{% block content %}
+
+<!--  form block -->
+
+<div class="row">
+<div class="span12">
+
+<h3>{% trans %}Insert Interview Info{% endtrans %}</h3>
+
+<form action="/startinterview" class="well validate form-inline" method="post">
+
+        
+        <select name="area" id="area">
+        <option  value="">{% trans %}Select Specialization{% endtrans %}</option>  
+        {% for area in areas %}
+             <option {% if (area.region == area.name ) %} selected="selected" {% endif %} value="{{ area.name}}">{{ area.getName() }}</option>   
+        {% endfor %}
+        </select>
+
+        
+        <select name="region" id="region">
+        <option  value="">{% trans %}Select Region{% endtrans %}</option>  
+        {% for region in regions %}
+             <option data_region="{{region.short}}" {% if ( user.region == region.name ) %} selected="selected" {% endif %} value="{{ region.name}}">{{ region.name }}</option>   
+        {% endfor %}
+        </select>
+
+        <!-- 
+        <select name="city" id="city">
+        <option  value="">Select City</option>  
+        {% for city in cities %}
+             <option data_region="{{city.state}}" {% if ( user.city == city.name ) %} selected="selected" {% endif %} value="{{ city.name}}">{{ city.name }}</option>   
+        {% endfor %}
+        </select>
+         -->
+          
+        <button type="submit" class="btn">{% trans %}GO TO PATIENT CASES{% endtrans %}</button>
+      </form>
+
+</div>
+</div>
+
+<!--  #form block -->
+
+
+
+{% endblock %}
+
