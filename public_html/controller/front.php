@@ -51,7 +51,7 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 		$answer = R::dispense("answers");
 
 		$answer->domanda = $domanda;
-		$answer->risposte = $risposta;
+		$answer->risposte = ""+$risposta;
 		$answer->qualeAPP = "APP2";
 		$answer->quante = 0;
 		$answer->posizione = 0;
@@ -229,7 +229,7 @@ $app
 				function () use ($app) {
 
 					//$last_answer = R::findOne('answers', 'ORDER BY id DESC LIMIT 1 ',array());
-					$last_answer = R::getRow('select * from answers ORDER BY id DESC LIMIT 1');
+					$last_answer = R::getRow('select * from answers ORDER BY id ASC LIMIT 1');
 
 					if($last_answer){
 
