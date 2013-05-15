@@ -64,6 +64,8 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 // Elimina tutti i risultati
 $app->get('/resetall', $noAuth(),
 				function () use ($app) {
+
+
 					try{
 						R::exec("DROP TABLE countries");
 					}catch(Exception $ex){
