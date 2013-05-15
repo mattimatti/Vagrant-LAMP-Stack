@@ -70,7 +70,7 @@ $app->get('/resetall', $noAuth(),
 
 					loadFixtures();
 
-					$app->redirect("/");
+					$app->redirect("/manage");
 
 				});
 
@@ -208,41 +208,6 @@ $app
 
 						$response = $app->request()->params();
 
-
-						// computo delle percentuali
-						$allanswers = R::find('answers', '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(
-							':qualeAPP' => "APP2",
-							':domanda' => $app->request()->post("domanda")
-						));
-
-						// Estrai il totale di risposte per questa domanda
-
-						$totalAnswers = 0;
-						foreach ($allanswers as $answer) {
-							$totalAnswers+= $answer->quante;
-						}
-
-
-						$risposte = array();
-
-						foreach ($allanswers as $answer) {
-
-							$risposta = array();
-
-							$risposta["risposta"] = $answer->risposte;
-							$risposta["quante"] = $answer->quante;
-							$risposta["percent"] = $answer->quante / $totalAnswers * 100;
-
-
-
-							$risposte[] =  $risposta;
-						}
-
-
-						$response ["risposte"] = $risposte;
-
-
-
 						echo json_encode($response);
 						exit();
 
@@ -263,8 +228,59 @@ $app
 		->get('/getstatus', $noAuth(),
 				function () use ($app) {
 
-					$last = R::getAll('select * from answers ORDER BY id DESC LIMIT 1');
-					echo json_encode($last);
+					//$last_answer = R::findOne('answers', 'ORDER BY id DESC LIMIT 1 ',array());
+					$last_answer = R::getRow('select * from answers ORDER BY id DESC LIMIT 1');
+
+					if($last_answer){
+
+						if($last_answer["qualeAPP"] == "APP2"){
+
+							// computo delle percentuali
+							$allanswers = R::find('answers', '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(
+									':qualeAPP' => $last_answer["qualeAPP"],
+									':domanda' => $last_answer["domanda"]
+							));
+
+							// Estrai il totale di risposte per questa domanda
+
+							$totalAnswers = 0;
+							foreach ($allanswers as $answer) {
+								$totalAnswers+= $answer->quante;
+							}
+
+
+							$risposte = array();
+
+							foreach ($allanswers as $answer) {
+
+								$risposta = array();
+
+								$risposta["risposta"] = $answer->risposte;
+								$risposta["quante"] = $answer->quante;
+								if($totalAnswers > 0){
+									$risposta["percent"] = $answer->quante / $totalAnswers * 100;
+								}else{
+									$risposta["percent"] = 0;
+								}
+
+
+
+
+								$risposte[] =  $risposta;
+							}
+
+
+							$last_answer ["stats"] = $risposte;
+
+						}
+
+					}else{
+						$last_answer = array();
+					}
+
+
+
+					echo json_encode($last_answer);
 
 				});
 
