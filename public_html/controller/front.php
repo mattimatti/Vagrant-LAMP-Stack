@@ -64,11 +64,21 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 // Elimina tutti i risultati
 $app->get('/resetall', $noAuth(),
 				function () use ($app) {
+					try{
+						R::exec("DROP TABLE countries");
+					}catch(Exception $ex){
 
-					R::exec("DROP TABLE countries");
-					R::exec("DROP TABLE answers");
+					}
+					try{
+						R::exec("DROP TABLE answers");
+						loadFixtures();
+					}catch(Exception $ex){
 
-					loadFixtures();
+					}
+
+
+
+
 
 					$app->redirect("/manage");
 
