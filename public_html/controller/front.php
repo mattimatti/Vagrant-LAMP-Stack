@@ -51,7 +51,7 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 		$answer = R::dispense("answers");
 
 		$answer->domanda = $domanda;
-		$answer->risposte = ""+$risposta;
+		$answer->risposte = "".$risposta;
 		$answer->qualeAPP = "APP2";
 		$answer->quante = 0;
 		$answer->posizione = 0;
