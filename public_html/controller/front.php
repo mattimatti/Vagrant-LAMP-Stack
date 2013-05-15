@@ -67,13 +67,13 @@ $app->get('/resetall', $noAuth(),
 					try{
 						R::exec("DROP TABLE countries");
 					}catch(Exception $ex){
-
+						die($ex->getMessage());
 					}
 					try{
 						R::exec("DROP TABLE answers");
 						loadFixtures();
 					}catch(Exception $ex){
-
+						die($ex->getMessage());
 					}
 
 

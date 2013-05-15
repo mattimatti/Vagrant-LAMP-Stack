@@ -38,7 +38,7 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 
 	define("ENVIRONMENT", 'production');
 	define("BASE_FOLDER", '');
-	define("HOST", 'http://server.dev');
+	define("HOST", 'http://hf.mattimatti.com');
 
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
