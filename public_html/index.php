@@ -23,7 +23,7 @@ session_start();
 $devlist = array(
 		'server.dev', '127.0.0.1');
 $prodlist = array(
-		'waau.local');
+		'waau.local','33.33.33.90');
 $staginglist = array(
 		'hf.mattimatti.com');
 
