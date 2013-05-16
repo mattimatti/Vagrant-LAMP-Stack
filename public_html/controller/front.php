@@ -207,7 +207,7 @@ $app
 					$app->getLog()->debug(print_r($app->request()->post(),1));
 
 
-					if($app->request()->post("risposte")){
+					//if($app->request()->post("risposte")){
 
 						// save in answers
 						$answer = R::dispense("answers");
@@ -221,7 +221,7 @@ $app
 
 						$app->getLog()->debug("salvato id $id");
 
-					}
+					//}
 
 
 					// Saves in indexed table
