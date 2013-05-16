@@ -16,8 +16,8 @@ Vagrant::Config.run do |config|
   config.vm.customize ["modifyvm", :id, "--memory", 512]
 
   # Define hostname to be used with Hostmaster
-  config.vm.host_name = "server.dev"
-  config.hosts.name = "server.dev"
+  #config.vm.host_name = "server.dev"
+  #config.hosts.name = "server.dev"
 
   # Use hostonly network with a static IP Address
   config.vm.network :hostonly, "33.33.33.90"
