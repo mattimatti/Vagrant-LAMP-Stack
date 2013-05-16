@@ -8,90 +8,78 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 
 		});
 
-	$app->get('/', $noAuth(), function () use ($app) {
+$app->get('/', $noAuth(), function () use ($app) {
 
-		die(";)");
+			die(";)");
 
-	});
-
-
-
+		});
 
 /////////////////////// RESET //////////////////////////////////////////////
 
+function loadFixtures() {
 
+	for ($i = 1; $i < 6; $i++) {
+		createAnswer(1, $i);
+	}
 
-	function loadFixtures(){
+	for ($i = 1; $i < 6; $i++) {
+		createAnswer(2, $i);
+	}
 
+	for ($i = 1; $i < 5; $i++) {
+		createAnswer(3, $i);
+	}
 
-		for ($i = 1; $i < 6; $i++) {
-			createAnswer(1,$i);
-		}
+	for ($i = 1; $i < 4; $i++) {
+		createAnswer(4, $i);
+	}
 
-		for ($i = 1; $i < 6; $i++) {
-			createAnswer(2,$i);
-		}
+	for ($i = 1; $i < 5; $i++) {
+		createAnswer(5, $i);
+	}
+}
+;
 
-		for ($i = 1; $i < 5; $i++) {
-			createAnswer(3,$i);
-		}
+function createAnswer($domanda, $risposta) {
 
-		for ($i = 1; $i < 4; $i++) {
-			createAnswer(4,$i);
-		}
+	$answer = R::dispense("app2");
 
-		for ($i = 1; $i < 5; $i++) {
-			createAnswer(5,$i);
-		}
-	};
+	$answer->domanda = $domanda;
+	$answer->risposte = "" . $risposta;
+	$answer->qualeAPP = "APP2";
+	$answer->quante = 0;
+	$answer->posizione = 0;
 
-	function createAnswer($domanda,$risposta){
+	R::store($answer);
 
-
-		$answer = R::dispense("answers");
-
-		$answer->domanda = $domanda;
-		$answer->risposte = "".$risposta;
-		$answer->qualeAPP = "APP2";
-		$answer->quante = 0;
-		$answer->posizione = 0;
-
-		R::store($answer);
-
-	};
-
+}
+;
 
 // Elimina tutti i risultati
-$app->get('/resetall', $noAuth(),
+$app
+		->get('/resetall', $noAuth(),
 				function () use ($app) {
 
-
-					try{
+					try {
 						R::exec("DROP TABLE countries");
-					}catch(Exception $ex){
+					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
-					try{
+					try {
 						R::exec("DROP TABLE answers");
-						loadFixtures();
-					}catch(Exception $ex){
+					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
-
-
-
-
+					try {
+						R::exec("DROP TABLE app2");
+						loadFixtures();
+					} catch (Exception $ex) {
+						die($ex->getMessage());
+					}
 
 					$app->redirect("/manage");
 
 				});
-
-
-
-
-
-
-
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
@@ -179,7 +167,7 @@ $app
 				function () use ($app) {
 
 					$data = array();
-					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(
+					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(
 							':qualeAPP' => "APP2"));
 					$app->render('app2/form.html', $data);
 
@@ -188,29 +176,37 @@ $app
 // Registra le risposte
 $app
 		->post('/app2/registeranswer', $noAuth(),
-
 				function () use ($app) {
 
 
+					// save in answers
+					$answer = R::dispense("answers");
+
+					$answer->domanda = $app->request()->post("domanda");
+					$answer->risposte = $app->request()->post("risposte");
+					$answer->qualeAPP = $app->request()->post("qualeAPP");
+					$answer->posizione = $app->request()->post("posizione");
+
+					R::store($answer);
+
+
+					// Saves in indexed table
+
 
 					// La risposta è pregenerata
-					$answer = R::findOne('answers', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(
-							':qualeAPP' => "APP2",
-							':domanda' => $app->request()->post("domanda"),
-							':risposte' => $app->request()->post("risposte")
-					)
+					$answer = R::findOne('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ',
+							array(
+									':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"),
+									':risposte' => $app->request()->post("risposte"))
+					);
 
-							);
+					if ($answer) {
 
-
-
-					if($answer){
-
-						$answer->quante  = $answer->quante+1;
+						$answer->quante = $answer->quante + 1;
 
 						R::store($answer);
 
-					}else{
+					} else {
 						//throw new Exception("Risposta Non generata");
 						die("ko");
 					}
@@ -240,26 +236,23 @@ $app
 		->get('/getstatus', $noAuth(),
 				function () use ($app) {
 
-					//$last_answer = R::findOne('answers', 'ORDER BY id DESC LIMIT 1 ',array());
-					$last_answer = R::getRow('select * from answers ORDER BY id ASC LIMIT 1');
+					$last_answer = R::getRow('select * from answers where id=(SELECT MAX(id)  FROM answers)');
 
-					if($last_answer){
+					if ($last_answer) {
 
-						if($last_answer["qualeAPP"] == "APP2"){
+						if ($last_answer["qualeAPP"] == "APP2") {
 
 							// computo delle percentuali
-							$allanswers = R::find('answers', '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(
-									':qualeAPP' => $last_answer["qualeAPP"],
-									':domanda' => $last_answer["domanda"]
-							));
+							$allanswers = R::find('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda ',
+									array(
+											':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 
 							// Estrai il totale di risposte per questa domanda
 
 							$totalAnswers = 0;
 							foreach ($allanswers as $answer) {
-								$totalAnswers+= $answer->quante;
+								$totalAnswers += $answer->quante;
 							}
-
 
 							$risposte = array();
 
@@ -269,37 +262,29 @@ $app
 
 								$risposta["risposta"] = $answer->risposte;
 								$risposta["quante"] = $answer->quante;
-								if($totalAnswers > 0){
+								if ($totalAnswers > 0) {
 									$risposta["percent"] = $answer->quante / $totalAnswers * 100;
-								}else{
+								} else {
 									$risposta["percent"] = 0;
 								}
 
-
-
-
-								$risposte[] =  $risposta;
+								$risposte[] = $risposta;
 							}
 
-
-							$last_answer ["stats"] = $risposte;
+							$last_answer["stats"] = $risposte;
 
 						}
 
-					}else{
+					} else {
 						$last_answer = array();
 					}
-
-
 
 					echo json_encode($last_answer);
 
 				});
 
 // Registra le risposte
-$app
-->get('/lastresponse', $noAuth(),
-		function () use ($app) {
+$app->get('/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
 			$app->render('lastresponse.html', $data);
