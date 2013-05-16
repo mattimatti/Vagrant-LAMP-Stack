@@ -88,6 +88,8 @@ $app
 		->get('/registercountry', $noAuth(),
 				function () use ($app) {
 
+					$app->getLog()->debug("entra GET /app1/registercountry");
+
 					$data = array();
 					$data["countries"] = R::getAll('select * from countries');
 
@@ -99,6 +101,9 @@ $app
 $app
 		->post('/registercountry', $noAuth(),
 				function () use ($app) {
+
+
+					$app->getLog()->debug("entra POST /app1/registercountry");
 
 					$country_name = $app->request()->post("country");
 
@@ -128,6 +133,8 @@ $app
 		->get('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
+					$app->getLog()->debug("entra GET /app1/registeranswer");
+
 					$data = array();
 					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(
 							':qualeAPP' => "APP1"));
@@ -140,6 +147,10 @@ $app
 $app
 		->post('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
+
+
+					$app->getLog()->debug("entra POST /app1/registeranswer");
+
 
 					$answer = R::dispense("answers");
 
@@ -167,7 +178,7 @@ $app
 				function () use ($app) {
 
 
-
+					$app->getLog()->debug("entra GET /app2/registeranswer");
 
 					$data = array();
 					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(
@@ -181,7 +192,7 @@ $app
 		->post('/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra");
+					$app->getLog()->debug("entra POST /app2/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(),1));
 
 					// save in answers
