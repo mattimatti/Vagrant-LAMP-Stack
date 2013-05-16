@@ -60,6 +60,9 @@ $app
 		->get('/resetall', $noAuth(),
 				function () use ($app) {
 
+
+					$app->getLog()->debug("entra GET /resetall");
+
 					try {
 						R::exec("DROP TABLE countries");
 					} catch (Exception $ex) {
@@ -153,15 +156,21 @@ $app
 					$app->getLog()->debug("entra POST /app1/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(),1));
 
+					if($app->request()->post("risposte")){
 
-					$answer = R::dispense("answers");
+						$answer = R::dispense("answers");
 
-					$answer->domanda = $app->request()->post("domanda");
-					$answer->risposte = $app->request()->post("risposte");
-					$answer->qualeAPP = $app->request()->post("qualeAPP");
-					$answer->posizione = $app->request()->post("posizione");
+						$answer->domanda = $app->request()->post("domanda");
+						$answer->risposte = $app->request()->post("risposte");
+						$answer->qualeAPP = $app->request()->post("qualeAPP");
+						$answer->posizione = $app->request()->post("posizione");
 
-					R::store($answer);
+						$id = R::store($answer);
+
+						$app->getLog()->debug("salvato id $id");
+
+					}
+
 
 					// Se stiamo simlando i forms
 					$simulate = $app->request()->post("simulate");
@@ -197,17 +206,23 @@ $app
 					$app->getLog()->debug("entra POST /app2/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(),1));
 
-					// save in answers
-					$answer = R::dispense("answers");
 
-					$answer->domanda = $app->request()->post("domanda");
-					$answer->risposte = $app->request()->post("risposte");
-					$answer->qualeAPP = $app->request()->post("qualeAPP");
-					$answer->posizione = $app->request()->post("posizione");
+					if($app->request()->post("risposte")){
 
-					$id = R::store($answer);
+						// save in answers
+						$answer = R::dispense("answers");
 
-					$app->getLog()->debug("salvato id $id");
+						$answer->domanda = $app->request()->post("domanda");
+						$answer->risposte = $app->request()->post("risposte");
+						$answer->qualeAPP = $app->request()->post("qualeAPP");
+						$answer->posizione = $app->request()->post("posizione");
+
+						$id = R::store($answer);
+
+						$app->getLog()->debug("salvato id $id");
+
+					}
+
 
 					// Saves in indexed table
 
@@ -222,9 +237,13 @@ $app
 
 						$app->getLog()->debug("trovata answer " . $answer->id);
 
+
+
 						$answer->quante = $answer->quante + 1;
 
 						R::store($answer);
+
+						$app->getLog()->debug("aggiornato count a: " . $answer->quante);
 
 					} else {
 						$app->getLog()->error("answer non trovata esci");
