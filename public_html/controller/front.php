@@ -88,7 +88,7 @@ $app
 		->get('/registercountry', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /app1/registercountry");
+					$app->getLog()->debug("entra GET /registercountry");
 
 					$data = array();
 					$data["countries"] = R::getAll('select * from countries');
