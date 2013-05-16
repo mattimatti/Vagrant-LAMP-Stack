@@ -156,7 +156,7 @@ $app
 					$app->getLog()->debug("entra POST /app1/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(),1));
 
-					if($app->request()->post("risposte")){
+					if($app->request()->post("risposte")."" !== "null"){
 
 						$answer = R::dispense("answers");
 
