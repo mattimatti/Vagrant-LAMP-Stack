@@ -166,6 +166,9 @@ $app
 		->get('/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
+
+
+
 					$data = array();
 					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(
 							':qualeAPP' => "APP2"));
@@ -178,6 +181,8 @@ $app
 		->post('/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
+					$app->getLog()->debug("entra");
+					$app->getLog()->debug(print_r($app->request()->post(),1));
 
 					// save in answers
 					$answer = R::dispense("answers");
@@ -189,9 +194,7 @@ $app
 
 					R::store($answer);
 
-
 					// Saves in indexed table
-
 
 					// La risposta è pregenerata
 					$answer = R::findOne('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ',
