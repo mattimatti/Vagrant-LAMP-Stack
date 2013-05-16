@@ -192,7 +192,9 @@ $app
 					$answer->qualeAPP = $app->request()->post("qualeAPP");
 					$answer->posizione = $app->request()->post("posizione");
 
-					R::store($answer);
+					$id = R::store($answer);
+
+					$app->getLog()->debug("salvato id $id");
 
 					// Saves in indexed table
 
@@ -205,11 +207,14 @@ $app
 
 					if ($answer) {
 
+						$app->getLog()->debug("trovata answer " . $answer->id);
+
 						$answer->quante = $answer->quante + 1;
 
 						R::store($answer);
 
 					} else {
+						$app->getLog()->error("answer non trovata esci");
 						//throw new Exception("Risposta Non generata");
 						die("ko");
 					}
