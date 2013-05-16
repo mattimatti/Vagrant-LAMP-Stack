@@ -104,6 +104,7 @@ $app
 
 
 					$app->getLog()->debug("entra POST /app1/registercountry");
+					$app->getLog()->debug(print_r($app->request()->post(),1));
 
 					$country_name = $app->request()->post("country");
 
@@ -150,6 +151,7 @@ $app
 
 
 					$app->getLog()->debug("entra POST /app1/registeranswer");
+					$app->getLog()->debug(print_r($app->request()->post(),1));
 
 
 					$answer = R::dispense("answers");
