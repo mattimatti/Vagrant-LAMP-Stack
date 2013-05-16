@@ -144,8 +144,7 @@ include 'controller/front.php';
 // wrap the errors in try catch and send email..
 try {
 	$app->run();
-	throw new Exception("ssss");
-} catch (Exception $ex) {
+} catch (Exception $exception) {
 	$mailText = 'File :' . $exception->getFile() . 'line: ' . $exception->getLine() . "\n\n" . "------MESSAGE----\n\n"
 			. $exception->getMessage() . "\n\n-------------------" . "\n\n------TRACE--------" . $exception->getTraceAsString()
 			. "\n\n-------------------";
