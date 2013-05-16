@@ -19,17 +19,17 @@ Twig_Extensions_Autoloader::register();
 session_cache_limiter(false);
 session_start();
 
-
 // set environment
 $devlist = array(
 		'server.dev', '127.0.0.1');
-$prodlist = array('hf.mattimatti.com');
-$staginglist = array();
+$prodlist = array(
+		'waau.local');
+$staginglist = array(
+		'hf.mattimatti.com');
 
 if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 
 	define("ENVIRONMENT", 'development');
-	define("HOST", 'http://server.dev');
 	define("BASE_FOLDER", '');
 	error_reporting(E_ALL);
 	ini_set('display_errors', "1");
@@ -38,17 +38,15 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 
 	define("ENVIRONMENT", 'production');
 	define("BASE_FOLDER", '');
-	define("HOST", 'http://hf.mattimatti.com');
 
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
+	error_reporting(E_ERROR);
+	ini_set('display_errors', 0);
 
 } else if (in_array($_SERVER['HTTP_HOST'], $staginglist)) {
 
 	define("ENVIRONMENT", 'staging');
-	define("HOST", 'http://server.dev');
 	define("BASE_FOLDER", '');
-	error_reporting(0);
+	error_reporting(E_ALL);
 	ini_set('display_errors', 0);
 
 }
@@ -128,11 +126,13 @@ $app->config('mode', ENVIRONMENT);
 if (ENVIRONMENT == 'development') {
 	include 'config/development/dbconnection.php';
 } else if (ENVIRONMENT == 'production') {
+	include 'config/development/dbconnection.php';
+	//R::freeze();
+} else if (ENVIRONMENT == 'staging') {
 	include 'config/production/dbconnection.php';
 	//R::freeze();
-} else {
-	include 'config/production/dbconnection.php';
-	//R::freeze();
+}else{
+	throw new Exception("No environment found");
 }
 
 //R::debug(true);
@@ -141,7 +141,17 @@ if (ENVIRONMENT == 'development') {
 include 'controller/auth.php';
 include 'controller/front.php';
 
-$app->run();
+// wrap the errors in try catch and send email..
+try {
+	$app->run();
+	throw new Exception("ssss");
+} catch (Exception $ex) {
+	$mailText = 'File :' . $exception->getFile() . 'line: ' . $exception->getLine() . "\n\n" . "------MESSAGE----\n\n"
+			. $exception->getMessage() . "\n\n-------------------" . "\n\n------TRACE--------" . $exception->getTraceAsString()
+			. "\n\n-------------------";
+	@mail("mmonti@gmail.com", "Errore app hf", $mailText);
+	exit();
+}
 
 function dump($obj) {
 	echo "<pre>";
