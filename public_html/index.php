@@ -147,6 +147,7 @@ try {
 } catch (Exception $exception) {
 	$mailText = 'File :' . $exception->getFile() . 'line: ' . $exception->getLine() . "\n\n" . "------MESSAGE----\n\n" . $exception->getMessage() . "\n\n-------------------" . "\n\n------TRACE--------" . $exception->getTraceAsString() . "\n\n-------------------";
 	@mail("mmonti@gmail.com", "Errore app hf " .ENVIRONMENT, $mailText);
+	throw $exception;
 }
 
 function dump($obj) {
