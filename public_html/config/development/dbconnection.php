@@ -1,2 +1,2 @@
 <?php
-R::setup('mysql:host=127.0.0.1;dbname=dbname', 'root', 'root');
+R::setup('mysql:host=10.0.1.4;dbname=dbname', 'root', 'root');
