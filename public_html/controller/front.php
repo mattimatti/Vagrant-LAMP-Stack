@@ -1,5 +1,16 @@
 <?php
 
+
+//HOME route show nothing
+$app->get('/ping', $noAuth(), function () use ($app) {
+
+	die("pong");
+
+});
+
+
+
+
 //HOME route show nothing
 $app->get('/manage', $noAuth(), function () use ($app) {
 
