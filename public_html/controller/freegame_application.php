@@ -79,7 +79,7 @@ $app
 		->get('/freegame/getplayers', $noAuth(),
 				function () use ($app) {
 
-					$currentPlayers = R::getRow('select * from fre where id=(SELECT MAX(id)  FROM freegame_players)');
+					$currentPlayers = R::getRow('select * from freegame_players where id=(SELECT MAX(id)  FROM freegame_players)');
 
 					if (!$currentPlayers) {
 						$currentPlayers = array();
