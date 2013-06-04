@@ -47,7 +47,7 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 	define("ENVIRONMENT", 'staging');
 	define("BASE_FOLDER", '');
 	error_reporting(E_ALL);
-	ini_set('display_errors', 0);
+	ini_set('display_errors', 1);
 
 }
 
