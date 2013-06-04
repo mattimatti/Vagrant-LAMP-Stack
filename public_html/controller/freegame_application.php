@@ -39,9 +39,6 @@ $app
 					$app->getLog()->debug("entra GET /freegame/saveplayers");
 
 					$data = array();
-					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(
-							':qualeAPP' => "APP1"));
-
 					$app->render('freegame/form.html', $data);
 
 				});

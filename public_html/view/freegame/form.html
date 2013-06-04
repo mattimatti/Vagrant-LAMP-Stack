@@ -1,0 +1,47 @@
+{% extends "layout.html" %} {% block content %}
+<pre>
+ POST /freegame/saveplayer    [freegame] [player1] [player2] 
+</pre>
+
+<hr />
+<form class="form-horizontal" method="post">
+	<h2>Form test</h2>
+
+
+	<div class="control-group">
+		<label class="control-label" for="">freegame</label>
+		<div class="controls">
+			<select name="freegame">
+				<option>YES</option>
+				<option>NO</option>
+			</select>
+		</div>
+	</div>
+
+
+	<div class="control-group">
+		<label class="control-label" for="">player1</label>
+		<div class="controls">
+			<input type="text" name="player1" value="" class="" placeholder="player1">
+			
+		</div>
+	</div>
+
+
+	<div class="control-group">
+		<label class="control-label" for="">player2</label>
+		<div class="controls">
+			<input type="text" name="player2" value="" class="" placeholder="player2">
+		</div>
+	</div>
+
+
+
+	<input type="hidden" name="simulate" value="1" />
+
+	<button class="btn btn-primary" type="submit">Salva Giocatori</button>
+
+</form>
+
+
+{% endblock %}
