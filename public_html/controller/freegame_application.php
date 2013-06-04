@@ -92,6 +92,6 @@ $app
 $app->get('/freegame/lastresponse', $noAuth(), function () use ($app) {
 
 	$data = array();
-	$app->render('lastresponse.html', $data);
+	$app->render('freegame/lastresponse.html', $data);
 
 });
