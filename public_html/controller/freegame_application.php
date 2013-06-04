@@ -39,6 +39,7 @@ $app
 					$app->getLog()->debug("entra GET /freegame/saveplayers");
 
 					$data = array();
+					$data["players"] = R::find('freegame_players');
 					$app->render('freegame/form.html', $data);
 
 				});

@@ -45,6 +45,28 @@
 	<button class="btn btn-primary" type="submit">Salva Giocatori</button>
 
 </form>
+<hr />
 
+<h3>Players</h3>
 
+<table class="table table-striped table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>freegame</th>
+		<th>player1</th>
+		<th>player2</th>
+	</thead>
+	<tbody>
+		{% for player in players %}
+
+		<tr>
+			<td>{{player.id}}</td>
+			<td>{{player.freegame}}</td>
+			<td>{{player.player1}}</td>
+			<td>{{player.player2}}</td>
+		</tr>
+
+		{% endfor %}
+	</tbody>
+</table>
 {% endblock %}
