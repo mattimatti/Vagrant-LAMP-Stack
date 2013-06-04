@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 //HOME route show nothing
 $app->get('/manage', $noAuth(), function () use ($app) {
 
@@ -10,8 +8,6 @@ $app->get('/manage', $noAuth(), function () use ($app) {
 			$app->render('index.html', $data);
 
 		});
-
-
 
 /////////////////////// RESET //////////////////////////////////////////////
 

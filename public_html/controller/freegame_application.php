@@ -13,7 +13,7 @@ $app->get('/freegame/manage', $noAuth(), function () use ($app) {
 
 // Elimina tutti i players
 $app
-		->get('/resetall', $noAuth(),
+		->get('/freegame/resetall', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /resetall");
