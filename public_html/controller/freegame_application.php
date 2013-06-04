@@ -1,9 +1,6 @@
 <?php
 
-//HOME route show nothing
-$app->get('/ping', $noAuth(), function () use ($app) {
-			die("pong");
-});
+
 
 //HOME route show nothing
 $app->get('/freegame/manage', $noAuth(), function () use ($app) {
@@ -13,11 +10,6 @@ $app->get('/freegame/manage', $noAuth(), function () use ($app) {
 
 		});
 
-$app->get('/', $noAuth(), function () use ($app) {
-
-			die(";)");
-
-		});
 
 // Elimina tutti i players
 $app

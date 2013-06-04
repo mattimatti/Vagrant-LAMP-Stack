@@ -139,6 +139,7 @@ if (ENVIRONMENT == 'development') {
 
 // this must be on top.
 include 'controller/auth.php';
+include 'controller/baseapp.php';
 include 'controller/hf_application.php';
 include 'controller/freegame_application.php';
 
