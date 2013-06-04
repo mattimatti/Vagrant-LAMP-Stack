@@ -139,7 +139,8 @@ if (ENVIRONMENT == 'development') {
 
 // this must be on top.
 include 'controller/auth.php';
-include 'controller/front.php';
+include 'controller/hf_application.php';
+include 'controller/freegame_application.php';
 
 // wrap the errors in try catch and send email..
 try {
