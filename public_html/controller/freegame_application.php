@@ -5,7 +5,6 @@
 //HOME route show nothing
 $app->get('/freegame/manage', $noAuth(), function () use ($app) {
 
-		die("sss");
 			$data = array();
 			$app->render('freegame/index.html', $data);
 
