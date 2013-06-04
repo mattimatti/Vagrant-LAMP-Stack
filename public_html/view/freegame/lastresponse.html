@@ -1,0 +1,59 @@
+{% extends "layout.html" %} 
+
+
+
+{% block content %} 
+
+<pre>
+ GET /getstatus
+</pre>
+
+
+
+
+	<!-- BUTTON TO GET STATUS -->
+	
+	<a href="javascript:;" class="btn" id="getstatus">Richiedi Ultimi giocatori salvati</a>
+
+	<hr/>
+	
+	<!-- THE STATUS HOLDER -->
+	
+	<pre id="status_response">
+	
+	
+	</pre>	
+
+
+
+{% endblock %} 
+
+
+
+{% block pagejs %}
+
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+
+				$("#getstatus").click(
+						function() {
+
+							$.ajax({
+								url : "/freegame/getplayers",
+								dataType : "json",
+								success : function(response) {
+
+									$("#status_response").html(
+											JSON.stringify(response, undefined,
+													2));
+
+								}
+							});
+
+						});
+
+			});
+</script>
+
+{% endblock %}

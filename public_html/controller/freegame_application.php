@@ -88,3 +88,10 @@ $app
 
 				});
 
+// Registra le risposte
+$app->get('/freegame/lastresponse', $noAuth(), function () use ($app) {
+
+	$data = array();
+	$app->render('lastresponse.html', $data);
+
+});
