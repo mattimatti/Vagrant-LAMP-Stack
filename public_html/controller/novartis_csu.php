@@ -1,7 +1,7 @@
 <?php
 
 
-R::debug(true);
+//R::debug(true);
 
 
 //HOME route show nothing
