@@ -14,6 +14,12 @@ $app->get('/csu', $noAuth(), function () use ($app) {
 
 });
 
+$app->get('/csu/', $noAuth(), function () use ($app) {
+	
+		die(":)");
+	
+});
+
 // Elimina tutti i players
 $app
 		->get('/csu/resetall', $noAuth(),
