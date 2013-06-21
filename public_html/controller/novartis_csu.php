@@ -75,6 +75,8 @@ $app
 		->get('/csu/getlastsentences', $noAuth(),
 				function () use ($app) {
 					
+					header("Content-Type: application/json");
+					
 					$app->getLog()->debug("entra GET /csu/getlastsentences");
 
 					$currentPlayers = R::findAll("csu_sentences","ORDER BY id DESC LIMIT 10");
@@ -84,5 +86,7 @@ $app
 					}
 
 					echo json_encode(R::exportAll($currentPlayers));
+					
+					exit();
 
 				});
