@@ -1,5 +1,9 @@
 <?php
 
+
+R::debug(true);
+
+
 //HOME route show nothing
 $app->get('/csu/manage', $noAuth(), function () use ($app) {
 
