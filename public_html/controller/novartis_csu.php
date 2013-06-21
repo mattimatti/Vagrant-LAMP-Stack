@@ -56,8 +56,9 @@ $app
 						throw new Exception("Missing sentence");
 					}
 					
-
-					if(trim($sentence) == ""){
+					$sentence = trim($sentence);
+					
+					if($sentence == ""){
 						return;
 					}
 
