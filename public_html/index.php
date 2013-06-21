@@ -142,6 +142,8 @@ include 'controller/auth.php';
 include 'controller/baseapp.php';
 include 'controller/hf_application.php';
 include 'controller/freegame_application.php';
+include 'controller/novartis_csu.php';
+
 
 // wrap the errors in try catch and send email..
 try {
