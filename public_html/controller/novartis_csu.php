@@ -83,6 +83,6 @@ $app
 						$currentPlayers = array();
 					}
 
-					echo json_encode($currentPlayers);
+					echo $currentPlayers->export();
 
 				});
