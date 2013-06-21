@@ -64,7 +64,9 @@ $app
 					$answer = R::dispense("csu_sentences");
 					$answer->sentence = $sentence;
 					$id = R::store($answer);
-
+					
+					
+					$app->getLog()->debug(print_r($answer, 1));
 
 				});
 
@@ -72,6 +74,8 @@ $app
 $app
 		->get('/csu/getlastsentences', $noAuth(),
 				function () use ($app) {
+					
+					$app->getLog()->debug("entra GET /csu/getlastsentences");
 
 					$currentPlayers = R::findAll("csu_sentences","ORDER BY id DESC LIMIT 10");
 
