@@ -10,17 +10,39 @@ function hf2_loadFixtures($app = "APP2") {
 		hf2_createAnswer(2, $i, $app);
 	}
 
-	for ($i = 1; $i < 5; $i++) {
+	for ($i = 1; $i < 6; $i++) {
 		hf2_createAnswer(3, $i, $app);
 	}
 
-	for ($i = 1; $i < 4; $i++) {
+	for ($i = 1; $i < 6; $i++) {
 		hf2_createAnswer(4, $i, $app);
 	}
 
-	for ($i = 1; $i < 5; $i++) {
+	for ($i = 1; $i < 6; $i++) {
 		hf2_createAnswer(5, $i, $app);
 	}
+	
+	for ($i = 1; $i < 6; $i++) {
+		hf2_createAnswer(6, $i, $app);
+	}
+	
+	for ($i = 1; $i < 6; $i++) {
+		hf2_createAnswer(7, $i, $app);
+	}
+	
+	for ($i = 1; $i < 6; $i++) {
+		hf2_createAnswer(8, $i, $app);
+	}
+	
+	for ($i = 1; $i < 6; $i++) {
+		hf2_createAnswer(9, $i, $app);
+	}
+
+	for ($i = 1; $i < 6; $i++) {
+		hf2_createAnswer(10, $i, $app);
+	}	
+	
+	
 }
 
 function hf2_createAnswer($domanda, $risposta, $app = "APP2") {
