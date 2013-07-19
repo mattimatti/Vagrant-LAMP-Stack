@@ -1,14 +1,7 @@
 <?php
 
-//HOME route show nothing
-$app->get('/hf/manage', $noAuth(), function () use ($app) {
 
-			$data = array();
-			$app->render('index.html', $data);
 
-		});
-
-/////////////////////// RESET //////////////////////////////////////////////
 
 function loadFixtures() {
 
@@ -32,7 +25,8 @@ function loadFixtures() {
 		createAnswer(5, $i);
 	}
 }
-;
+
+
 
 function createAnswer($domanda, $risposta) {
 
@@ -47,7 +41,26 @@ function createAnswer($domanda, $risposta) {
 	R::store($answer);
 
 }
-;
+
+
+
+
+
+
+
+/////////////////////// ADMIN HOME //////////////////////////////////////////////
+
+
+
+$app->get('/hf/manage', $noAuth(), function () use ($app) {
+
+			$data = array();
+			$app->render('index.html', $data);
+
+		});
+
+/////////////////////// RESET //////////////////////////////////////////////
+
 
 // Elimina tutti i risultati
 $app
@@ -68,7 +81,9 @@ $app
 					}
 					try {
 						R::exec("DROP TABLE app2");
+						
 						loadFixtures();
+						
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
@@ -76,6 +91,9 @@ $app
 					$app->redirect("/hf/manage");
 
 				});
+
+
+
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
@@ -89,14 +107,15 @@ $app->get('/hf/registercountry', $noAuth(), function () use ($app) {
 
 			$app->render('registercountry.html', $data);
 
-		});
+});
+
 
 // Registra le country
 $app
 		->post('/hf/registercountry', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /app1/hf/registercountry");
+					$app->getLog()->debug("entra POST /hf/registercountry");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$country_name = $app->request()->post("country");
@@ -119,9 +138,14 @@ $app
 
 				});
 
+
+
+
+
+
 /////////////////////// APP 1 //////////////////////////////////////////////
 
-// Registra le risposte
+// SHOW THE FORM
 $app
 		->get('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
@@ -135,7 +159,8 @@ $app
 
 				});
 
-// Registra le risposte
+
+// REGISTER ANSWER APP1
 $app
 		->post('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
@@ -166,6 +191,12 @@ $app
 					}
 
 				});
+
+
+
+
+
+
 
 /////////////////////// APP 2 //////////////////////////////////////////////
 
@@ -247,9 +278,12 @@ $app
 
 				});
 
-// Registra le risposte
+
+
+
+// GET THE STATUS
 $app
-		->get('/getstatus', $noAuth(),
+		->get('/hf/getstatus', $noAuth(),
 				function () use ($app) {
 
 					$last_answer = R::getRow('select * from answers where id=(SELECT MAX(id)  FROM answers)');
@@ -297,10 +331,14 @@ $app
 
 				});
 
-// Registra le risposte
-$app->get('/lastresponse', $noAuth(), function () use ($app) {
+
+
+
+
+// SHOW THE LAST RESPONSE
+$app->get('/hf/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
 			$app->render('lastresponse.html', $data);
 
-		});
+});
