@@ -73,16 +73,16 @@ $app
 						die($ex->getMessage());
 					}
 
-					$app->redirect("/manage");
+					$app->redirect("/hf/manage");
 
 				});
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
 // Mostra form di test
-$app->get('/registercountry', $noAuth(), function () use ($app) {
+$app->get('/hf/registercountry', $noAuth(), function () use ($app) {
 
-			$app->getLog()->debug("entra GET /registercountry");
+			$app->getLog()->debug("entra GET /hf/registercountry");
 
 			$data = array();
 			$data["countries"] = R::getAll('select * from countries');
@@ -93,10 +93,10 @@ $app->get('/registercountry', $noAuth(), function () use ($app) {
 
 // Registra le country
 $app
-		->post('/registercountry', $noAuth(),
+		->post('/hf/registercountry', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /app1/registercountry");
+					$app->getLog()->debug("entra POST /app1/hf/registercountry");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$country_name = $app->request()->post("country");
@@ -115,7 +115,7 @@ $app
 
 					R::store($country);
 
-					$app->redirect("/registercountry");
+					$app->redirect("/hf/registercountry");
 
 				});
 
