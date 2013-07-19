@@ -1,6 +1,5 @@
 <?php
 
-
 //HOME route show nothing
 $app->get('/manage', $noAuth(), function () use ($app) {
 
@@ -52,11 +51,10 @@ function createAnswer($domanda, $risposta) {
 
 // Elimina tutti i risultati
 $app
-		->get('/resetall', $noAuth(),
+		->get('/hf/resetall', $noAuth(),
 				function () use ($app) {
 
-
-					$app->getLog()->debug("entra GET /resetall");
+					$app->getLog()->debug("entra GET /hf/resetall");
 
 					try {
 						R::exec("DROP TABLE countries");
@@ -82,33 +80,29 @@ $app
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
 // Mostra form di test
-$app
-		->get('/registercountry', $noAuth(),
-				function () use ($app) {
+$app->get('/registercountry', $noAuth(), function () use ($app) {
 
-					$app->getLog()->debug("entra GET /registercountry");
+			$app->getLog()->debug("entra GET /registercountry");
 
-					$data = array();
-					$data["countries"] = R::getAll('select * from countries');
+			$data = array();
+			$data["countries"] = R::getAll('select * from countries');
 
-					$app->render('registercountry.html', $data);
+			$app->render('registercountry.html', $data);
 
-				});
+		});
 
 // Registra le country
 $app
 		->post('/registercountry', $noAuth(),
 				function () use ($app) {
 
-
 					$app->getLog()->debug("entra POST /app1/registercountry");
-					$app->getLog()->debug(print_r($app->request()->post(),1));
+					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$country_name = $app->request()->post("country");
 
 					// cerca country
-					$country = R::findOne('countries', ' name = :name ', array(
-							':name' => $country_name));
+					$country = R::findOne('countries', ' name = :name ', array(':name' => $country_name));
 
 					// sen non trova country crea oppure aggiorna
 					if (!$country) {
@@ -135,8 +129,7 @@ $app
 					$app->getLog()->debug("entra GET /app1/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(
-							':qualeAPP' => "APP1"));
+					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
 
 					$app->render('app1/form.html', $data);
 
@@ -147,11 +140,10 @@ $app
 		->post('/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
-
 					$app->getLog()->debug("entra POST /app1/registeranswer");
-					$app->getLog()->debug(print_r($app->request()->post(),1));
+					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
-					if($app->request()->post("risposte")."" !== "null"){
+					if ($app->request()->post("risposte") . "" !== "null") {
 
 						$answer = R::dispense("answers");
 
@@ -165,7 +157,6 @@ $app
 						$app->getLog()->debug("salvato id $id");
 
 					}
-
 
 					// Se stiamo simlando i forms
 					$simulate = $app->request()->post("simulate");
@@ -183,12 +174,10 @@ $app
 		->get('/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-
 					$app->getLog()->debug("entra GET /app2/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(
-							':qualeAPP' => "APP2"));
+					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
 					$app->render('app2/form.html', $data);
 
 				});
@@ -199,40 +188,32 @@ $app
 				function () use ($app) {
 
 					$app->getLog()->debug("entra POST /app2/registeranswer");
-					$app->getLog()->debug(print_r($app->request()->post(),1));
-
+					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					//if($app->request()->post("risposte")){
 
-						// save in answers
-						$answer = R::dispense("answers");
+					// save in answers
+					$answer = R::dispense("answers");
 
-						$answer->domanda = $app->request()->post("domanda");
-						$answer->risposte = $app->request()->post("risposte");
-						$answer->qualeAPP = $app->request()->post("qualeAPP");
-						$answer->posizione = $app->request()->post("posizione");
+					$answer->domanda = $app->request()->post("domanda");
+					$answer->risposte = $app->request()->post("risposte");
+					$answer->qualeAPP = $app->request()->post("qualeAPP");
+					$answer->posizione = $app->request()->post("posizione");
 
-						$id = R::store($answer);
+					$id = R::store($answer);
 
-						$app->getLog()->debug("salvato id $id");
+					$app->getLog()->debug("salvato id $id");
 
 					//}
-
 
 					// Saves in indexed table
 
 					// La risposta è pregenerata
-					$answer = R::findOne('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ',
-							array(
-									':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"),
-									':risposte' => $app->request()->post("risposte"))
-					);
+					$answer = R::findOne('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"), ':risposte' => $app->request()->post("risposte")));
 
 					if ($answer) {
 
 						$app->getLog()->debug("trovata answer " . $answer->id);
-
-
 
 						$answer->quante = $answer->quante + 1;
 
@@ -278,9 +259,7 @@ $app
 						if ($last_answer["qualeAPP"] == "APP2") {
 
 							// computo delle percentuali
-							$allanswers = R::find('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda ',
-									array(
-											':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
+							$allanswers = R::find('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 
 							// Estrai il totale di risposte per questa domanda
 
