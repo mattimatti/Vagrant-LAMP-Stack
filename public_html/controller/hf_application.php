@@ -28,13 +28,13 @@ function loadFixtures() {
 
 
 
-function createAnswer($domanda, $risposta) {
+function createAnswer($domanda, $risposta, $app="APP2") {
 
 	$answer = R::dispense("app2");
 
 	$answer->domanda = $domanda;
 	$answer->risposte = "" . $risposta;
-	$answer->qualeAPP = "APP2";
+	$answer->qualeAPP = $app;
 	$answer->quante = 0;
 	$answer->posizione = 0;
 
@@ -55,7 +55,7 @@ function createAnswer($domanda, $risposta) {
 $app->get('/hf/manage', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('index.html', $data);
+			$app->render('hf/index.html', $data);
 
 		});
 
@@ -105,7 +105,7 @@ $app->get('/hf/registercountry', $noAuth(), function () use ($app) {
 			$data = array();
 			$data["countries"] = R::getAll('select * from countries');
 
-			$app->render('registercountry.html', $data);
+			$app->render('hf/registercountry.html', $data);
 
 });
 
@@ -147,7 +147,7 @@ $app
 
 // SHOW THE FORM
 $app
-		->get('/app1/registeranswer', $noAuth(),
+		->get('/hf/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /app1/registeranswer");
@@ -155,17 +155,17 @@ $app
 					$data = array();
 					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
 
-					$app->render('app1/form.html', $data);
+					$app->render('hf/app1/form.html', $data);
 
 				});
 
 
 // REGISTER ANSWER APP1
 $app
-		->post('/app1/registeranswer', $noAuth(),
+		->post('/hf/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /app1/registeranswer");
+					$app->getLog()->debug("entra POST /hf/app1/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					if ($app->request()->post("risposte") . "" !== "null") {
@@ -187,7 +187,7 @@ $app
 					$simulate = $app->request()->post("simulate");
 
 					if ($simulate) {
-						$app->redirect("/app1/registeranswer");
+						$app->redirect("/hf/app1/registeranswer");
 					}
 
 				});
@@ -202,23 +202,23 @@ $app
 
 // Registra le risposte
 $app
-		->get('/app2/registeranswer', $noAuth(),
+		->get('/hf/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /app2/registeranswer");
+					$app->getLog()->debug("entra GET /hf/app2/registeranswer");
 
 					$data = array();
 					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
-					$app->render('app2/form.html', $data);
+					$app->render('hf/app2/form.html', $data);
 
 				});
 
 // Registra le risposte
 $app
-		->post('/app2/registeranswer', $noAuth(),
+		->post('/hf/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /app2/registeranswer");
+					$app->getLog()->debug("entra POST /hf/app2/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					//if($app->request()->post("risposte")){
@@ -339,6 +339,6 @@ $app
 $app->get('/hf/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('lastresponse.html', $data);
+			$app->render('hf/lastresponse.html', $data);
 
 });
