@@ -141,6 +141,7 @@ if (ENVIRONMENT == 'development') {
 include 'controller/auth.php';
 include 'controller/baseapp.php';
 include 'controller/hf_application.php';
+include 'controller/hf2_application.php';
 include 'controller/freegame_application.php';
 include 'controller/novartis_csu.php';
 

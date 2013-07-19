@@ -1,0 +1,140 @@
+{% extends "hf2/layout.html" %} {% block content %}
+<pre>
+ POST /hf2/app2/registeranswer    [posizione] [qualeAPP] [domanda] [risposte]
+</pre>
+
+<hr />
+<form class="form-horizontal" method="post">
+	<h2>Form Esempio</h2>
+
+	<div class="control-group">
+		<label class="control-label" for="">posizione</label>
+		<div class="controls">
+			<input type="text" name="posizione" value="1" class="" placeholder="">
+			
+		</div>
+	</div>
+
+
+	<div class="control-group">
+		<label class="control-label" for="">qualeAPP</label>
+		<div class="controls">
+			<input type="text" name="qualeAPP" value="APP2"  class="" placeholder="">
+		</div>
+	</div>
+
+
+
+	<div class="control-group">
+		<label class="control-label" for="">domanda</label>
+		<div class="controls">
+			<select name="domanda">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+			</select>
+		</div>
+	</div>
+
+
+
+	<div class="control-group">
+		<label class="control-label" for="">risposte</label>
+		<div class="controls">
+			<select name="risposte">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+	</div>
+
+
+
+	<input type="hidden" name="simulate" value="1" />
+
+	<!-- <button class="btn btn-primary" type="submit">Salva Risposta Post</button>-->
+	
+	<button id="saveajax" class="btn" type="button">Salva AJAX</button>
+	
+	<hr/>
+	<h3>Response Ajax</h3>
+	<pre id="responseajax"></pre>
+	
+	
+
+</form>
+
+<hr />
+
+<h3>Risultati</h3>
+<a href="/app2/registeranswer">aggiorna</a>
+
+<table class="table table-striped table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>qualeAPP</th>
+		<th>domanda</th>
+		<th>risposta</th>
+		<th>quante volte risposta</th>
+	</thead>
+	<tbody>
+		{% for answer in answers %}
+
+		<tr>
+			<td>{{answer.id}}</td>
+			<td>{{answer.qualeAPP}}</td>
+			<td>{{answer.domanda}}</td>
+			<td>{{answer.risposte}}</td>
+			<td>{{answer.quante}}</td>
+		</tr>
+
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
+
+
+
+{% block pagejs %}
+
+
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+
+					$("#saveajax").click(
+							function() {
+								
+								
+								var formData = $(this).parents("form").serialize();
+									
+								$.ajax({url:"/app2/registeranswer",data:formData, type:"post", dataType: "json", success:function(response) {
+
+									$("#responseajax").html(
+											JSON.stringify(response, undefined,
+													2));
+
+								}});
+
+							});
+
+				});
+	</script>
+
+
+
+
+
+{% endblock %}
+
+
