@@ -1,29 +1,29 @@
 <?php
 
-function loadFixtures($app = "APP2") {
+function hf_loadFixtures($app = "APP2") {
 
 	for ($i = 1; $i < 6; $i++) {
-		createAnswer(1, $i, $app);
+		hf_createAnswer(1, $i, $app);
 	}
 
 	for ($i = 1; $i < 6; $i++) {
-		createAnswer(2, $i, $app);
+		hf_createAnswer(2, $i, $app);
 	}
 
 	for ($i = 1; $i < 5; $i++) {
-		createAnswer(3, $i, $app);
+		hf_createAnswer(3, $i, $app);
 	}
 
 	for ($i = 1; $i < 4; $i++) {
-		createAnswer(4, $i, $app);
+		hf_createAnswer(4, $i, $app);
 	}
 
 	for ($i = 1; $i < 5; $i++) {
-		createAnswer(5, $i, $app);
+		hf_createAnswer(5, $i, $app);
 	}
 }
 
-function createAnswer($domanda, $risposta, $app = "APP2") {
+function hf_createAnswer($domanda, $risposta, $app = "APP2") {
 
 	$answer = R::dispense("hf_app2");
 
@@ -67,7 +67,7 @@ $app->get('/hf/resetall', $noAuth(),
 					try {
 						R::exec("DROP TABLE hf_app2");
 
-						loadFixtures();
+						hf_loadFixtures();
 
 					} catch (Exception $ex) {
 						die($ex->getMessage());
