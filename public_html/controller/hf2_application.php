@@ -1,36 +1,31 @@
 <?php
 
-
-
-
-function loadFixtures() {
+function hf2_loadFixtures($app = "APP2") {
 
 	for ($i = 1; $i < 6; $i++) {
-		createAnswer(1, $i);
+		hf2_createAnswer(1, $i, $app);
 	}
 
 	for ($i = 1; $i < 6; $i++) {
-		createAnswer(2, $i);
+		hf2_createAnswer(2, $i, $app);
 	}
 
 	for ($i = 1; $i < 5; $i++) {
-		createAnswer(3, $i);
+		hf2_createAnswer(3, $i, $app);
 	}
 
 	for ($i = 1; $i < 4; $i++) {
-		createAnswer(4, $i);
+		hf2_createAnswer(4, $i, $app);
 	}
 
 	for ($i = 1; $i < 5; $i++) {
-		createAnswer(5, $i);
+		hf2_createAnswer(5, $i, $app);
 	}
 }
 
+function hf2_createAnswer($domanda, $risposta, $app = "APP2") {
 
-
-function createAnswer($domanda, $risposta, $app="APP2") {
-
-	$answer = R::dispense("app2");
+	$answer = R::dispense("hf2_app2");
 
 	$answer->domanda = $domanda;
 	$answer->risposte = "" . $risposta;
@@ -42,15 +37,7 @@ function createAnswer($domanda, $risposta, $app="APP2") {
 
 }
 
-
-
-
-
-
-
 /////////////////////// ADMIN HOME //////////////////////////////////////////////
-
-
 
 $app->get('/hf2/manage', $noAuth(), function () use ($app) {
 
@@ -61,29 +48,27 @@ $app->get('/hf2/manage', $noAuth(), function () use ($app) {
 
 /////////////////////// RESET //////////////////////////////////////////////
 
-
 // Elimina tutti i risultati
-$app
-		->get('/hf2/resetall', $noAuth(),
+$app->get('/hf2/resetall', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /hf2/resetall");
 
 					try {
-						R::exec("DROP TABLE countries");
+						R::exec("DROP TABLE hf2_countries");
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
 					try {
-						R::exec("DROP TABLE answers");
+						R::exec("DROP TABLE hf2_answers");
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
 					try {
-						R::exec("DROP TABLE app2");
-						
-						loadFixtures();
-						
+						R::exec("DROP TABLE hf2_app2");
+
+						hf2_loadFixtures();
+
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
@@ -91,9 +76,6 @@ $app
 					$app->redirect("/hf2/manage");
 
 				});
-
-
-
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
@@ -103,16 +85,14 @@ $app->get('/hf2/registercountry', $noAuth(), function () use ($app) {
 			$app->getLog()->debug("entra GET /hf2/registercountry");
 
 			$data = array();
-			$data["countries"] = R::getAll('select * from countries');
+			$data["countries"] = R::getAll('select * from hf2_countries');
 
 			$app->render('hf2/registercountry.html', $data);
 
-});
-
+		});
 
 // Registra le country
-$app
-		->post('/hf2/registercountry', $noAuth(),
+$app->post('/hf2/registercountry', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra POST /hf2/registercountry");
@@ -121,11 +101,11 @@ $app
 					$country_name = $app->request()->post("country");
 
 					// cerca country
-					$country = R::findOne('countries', ' name = :name ', array(':name' => $country_name));
+					$country = R::findOne('hf2_countries', ' name = :name ', array(':name' => $country_name));
 
 					// sen non trova country crea oppure aggiorna
 					if (!$country) {
-						$country = R::dispense("countries");
+						$country = R::dispense("hf2_countries");
 						$country->name = $country_name;
 						$country->count = 1;
 					} else {
@@ -138,11 +118,6 @@ $app
 
 				});
 
-
-
-
-
-
 /////////////////////// APP 1 //////////////////////////////////////////////
 
 // SHOW THE FORM
@@ -153,12 +128,11 @@ $app
 					$app->getLog()->debug("entra GET /app1/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find('answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
+					$data["answers"] = R::find('hf2_answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
 
 					$app->render('hf2/app1/form.html', $data);
 
 				});
-
 
 // REGISTER ANSWER APP1
 $app
@@ -170,7 +144,7 @@ $app
 
 					if ($app->request()->post("risposte") . "" !== "null") {
 
-						$answer = R::dispense("answers");
+						$answer = R::dispense("hf2_answers");
 
 						$answer->domanda = $app->request()->post("domanda");
 						$answer->risposte = $app->request()->post("risposte");
@@ -192,12 +166,6 @@ $app
 
 				});
 
-
-
-
-
-
-
 /////////////////////// APP 2 //////////////////////////////////////////////
 
 // Registra le risposte
@@ -208,7 +176,7 @@ $app
 					$app->getLog()->debug("entra GET /hf2/app2/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find('app2', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
+					$data["answers"] = R::find("hf2_app2", ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
 					$app->render('hf2/app2/form.html', $data);
 
 				});
@@ -224,7 +192,7 @@ $app
 					//if($app->request()->post("risposte")){
 
 					// save in answers
-					$answer = R::dispense("answers");
+					$answer = R::dispense("hf2_answers");
 
 					$answer->domanda = $app->request()->post("domanda");
 					$answer->risposte = $app->request()->post("risposte");
@@ -240,7 +208,7 @@ $app
 					// Saves in indexed table
 
 					// La risposta è pregenerata
-					$answer = R::findOne('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"), ':risposte' => $app->request()->post("risposte")));
+					$answer = R::findOne("hf2_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"), ':risposte' => $app->request()->post("risposte")));
 
 					if ($answer) {
 
@@ -278,22 +246,19 @@ $app
 
 				});
 
-
-
-
 // GET THE STATUS
 $app
 		->get('/hf2/getstatus', $noAuth(),
 				function () use ($app) {
 
-					$last_answer = R::getRow('select * from answers where id=(SELECT MAX(id)  FROM answers)');
+					$last_answer = R::getRow('select * from hf2_answers where id=(SELECT MAX(id)  FROM hf2_answers)');
 
 					if ($last_answer) {
 
 						if ($last_answer["qualeAPP"] == "APP2") {
 
 							// computo delle percentuali
-							$allanswers = R::find('app2', '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
+							$allanswers = R::find("hf2_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 
 							// Estrai il totale di risposte per questa domanda
 
@@ -334,11 +299,10 @@ $app
 
 
 
-
 // SHOW THE LAST RESPONSE
 $app->get('/hf2/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
 			$app->render('hf2/lastresponse.html', $data);
 
-});
+		});
