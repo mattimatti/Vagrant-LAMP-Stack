@@ -2,43 +2,46 @@
 
 function hf2_loadFixtures($app = "APP2") {
 
-	for ($i = 1; $i < 6; $i++) {
+	$maxAnswers = 7;
+	
+	
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(1, $i, $app);
 	}
 
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(2, $i, $app);
 	}
 
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(3, $i, $app);
 	}
 
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(4, $i, $app);
 	}
 
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(5, $i, $app);
 	}
 	
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(6, $i, $app);
 	}
 	
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(7, $i, $app);
 	}
 	
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(8, $i, $app);
 	}
 	
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(9, $i, $app);
 	}
 
-	for ($i = 1; $i < 6; $i++) {
+	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(10, $i, $app);
 	}	
 	
