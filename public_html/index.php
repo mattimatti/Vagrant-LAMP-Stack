@@ -23,10 +23,7 @@ session_start();
 
 // SET ENVIRONMENT BASED ON HOST NAME
 
-// set environment
-$devlist = array('server.dev', '127.0.0.1');
-$prodlist = array('waau.local', '33.33.33.90', '10.0.1.100');
-$staginglist = array();
+require_once 'config/hosts.php';
 
 // DEFINE SEPCIFIC SETTINGS DEPENDING ON ENVIRONMENT
 
