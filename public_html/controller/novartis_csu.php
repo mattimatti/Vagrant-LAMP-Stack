@@ -1,8 +1,6 @@
 <?php
 
-
 //R::debug(true);
-
 
 //HOME route show nothing
 $app->get('/csu/manage', $noAuth(), function () use ($app) {
@@ -10,37 +8,34 @@ $app->get('/csu/manage', $noAuth(), function () use ($app) {
 			$data = array();
 			$app->render('csu/index.html', $data);
 
-});
+		});
 
 $app->get('/csu', $noAuth(), function () use ($app) {
 
-	die(":)");
+			die(":)");
 
-});
+		});
 
 $app->get('/csu/', $noAuth(), function () use ($app) {
-	
-		die(":)");
-	
-});
+
+			die(":)");
+
+		});
 
 // Elimina tutti i players
-$app
-		->get('/csu/resetall', $noAuth(),
-				function () use ($app) {
+$app->get('/csu/resetall', $noAuth(), function () use ($app) {
 
-					$app->getLog()->debug("entra GET /resetall");
+			$app->getLog()->debug("entra GET /resetall");
 
-					try {
-						R::exec("DROP TABLE csu_sentences");
-					} catch (Exception $ex) {
-						die($ex->getMessage());
-					}
+			try {
+				R::exec("DROP TABLE csu_sentences");
+			} catch (Exception $ex) {
+				die($ex->getMessage());
+			}
 
-					$app->redirect("/csu/manage");
+			$app->redirect("/csu/manage");
 
-				});
-
+		});
 
 // Registra le sentences
 $app
@@ -51,22 +46,21 @@ $app
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$sentence = $app->request()->post("sentence");
-					
-					if(!$sentence){
+
+					if (!$sentence) {
 						throw new Exception("Missing sentence");
 					}
-					
+
 					$sentence = trim($sentence);
-					
-					if($sentence == ""){
+
+					if ($sentence == "") {
 						return;
 					}
 
 					$answer = R::dispense("csu_sentences");
 					$answer->sentence = $sentence;
 					$id = R::store($answer);
-					
-					
+
 					$app->getLog()->debug(print_r($answer, 1));
 
 				});
@@ -75,19 +69,19 @@ $app
 $app
 		->get('/csu/getlastsentences', $noAuth(),
 				function () use ($app) {
-					
+
 					header("Content-Type: application/json");
-					
+
 					$app->getLog()->debug("entra GET /csu/getlastsentences");
 
-					$currentPlayers = R::findAll("csu_sentences","ORDER BY id DESC LIMIT 10");
+					$currentPlayers = R::findAll("csu_sentences", "ORDER BY id DESC LIMIT 10");
 
 					if (!$currentPlayers) {
 						$currentPlayers = array();
 					}
 
 					echo json_encode(R::exportAll($currentPlayers));
-					
+
 					exit();
 
 				});

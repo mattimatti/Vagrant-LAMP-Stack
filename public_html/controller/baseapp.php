@@ -2,11 +2,11 @@
 //HOME route show nothing
 $app->get('/ping', $noAuth(), function () use ($app) {
 
-	die("pong");
+			die("pong");
 
-});
+		});
 $app->get('/', $noAuth(), function () use ($app) {
 
-	die(";)");
+			die(";)");
 
-});
+		});

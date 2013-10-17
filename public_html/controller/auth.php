@@ -1,16 +1,13 @@
 <?php
 
-$app
-		->hook('slim.before',
-				function () {
+$app->hook('slim.before', function () {
 
-					$app = Slim::getInstance();
-					if (isset($_SESSION["role"])) {
-						$app->view()->appendData(array(
-										'role' => $_SESSION["role"]));
-					}
+			$app = Slim::getInstance();
+			if (isset($_SESSION["role"])) {
+				$app->view()->appendData(array('role' => $_SESSION["role"]));
+			}
 
-				});
+		});
 
 // ACL VALIDATION
 $authAdmin = function ($role = 'member') {
@@ -27,13 +24,11 @@ $authAdmin = function ($role = 'member') {
 	};
 };
 
-
 $noAuth = function () {
 
 	// no auth required
 	return true;
 };
-
 
 $authApplication = function ($role = 'representative') {
 
@@ -71,9 +66,7 @@ $app
 						if (isset($post->user) && isset($post->password) && isset($post->lang)) {
 
 							// fetch for a user with given credentials
-							$user = R::findOne("user", "username=:username AND password=:password",
-									array(
-											":username" => $post->user, ":password" => $post->password));
+							$user = R::findOne("user", "username=:username AND password=:password", array(":username" => $post->user, ":password" => $post->password));
 
 							// if recognized user
 							if ($user) {

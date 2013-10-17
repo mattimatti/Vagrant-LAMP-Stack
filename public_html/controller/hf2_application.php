@@ -3,8 +3,7 @@
 function hf2_loadFixtures($app = "APP2") {
 
 	$maxAnswers = 7;
-	
-	
+
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(1, $i, $app);
 	}
@@ -24,28 +23,27 @@ function hf2_loadFixtures($app = "APP2") {
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(5, $i, $app);
 	}
-	
+
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(6, $i, $app);
 	}
-	
+
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(7, $i, $app);
 	}
-	
+
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(8, $i, $app);
 	}
-	
+
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(9, $i, $app);
 	}
 
 	for ($i = 1; $i < $maxAnswers; $i++) {
 		hf2_createAnswer(10, $i, $app);
-	}	
-	
-	
+	}
+
 }
 
 function hf2_createAnswer($domanda, $risposta, $app = "APP2") {
@@ -74,7 +72,8 @@ $app->get('/hf2/manage', $noAuth(), function () use ($app) {
 /////////////////////// RESET //////////////////////////////////////////////
 
 // Elimina tutti i risultati
-$app->get('/hf2/resetall', $noAuth(),
+$app
+		->get('/hf2/resetall', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /hf2/resetall");
@@ -117,7 +116,8 @@ $app->get('/hf2/registercountry', $noAuth(), function () use ($app) {
 		});
 
 // Registra le country
-$app->post('/hf2/registercountry', $noAuth(),
+$app
+		->post('/hf2/registercountry', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra POST /hf2/registercountry");
@@ -320,9 +320,6 @@ $app
 					echo json_encode($last_answer);
 
 				});
-
-
-
 
 // SHOW THE LAST RESPONSE
 $app->get('/hf2/lastresponse', $noAuth(), function () use ($app) {

@@ -1,7 +1,5 @@
 <?php
 
-
-
 //HOME route show nothing
 $app->get('/freegame/manage', $noAuth(), function () use ($app) {
 
@@ -10,42 +8,31 @@ $app->get('/freegame/manage', $noAuth(), function () use ($app) {
 
 		});
 
-
 // Elimina tutti i players
-$app
-		->get('/freegame/resetall', $noAuth(),
-				function () use ($app) {
+$app->get('/freegame/resetall', $noAuth(), function () use ($app) {
 
-					$app->getLog()->debug("entra GET /resetall");
+			$app->getLog()->debug("entra GET /resetall");
 
-					try {
-						R::exec("DROP TABLE freegame_players");
-					} catch (Exception $ex) {
-						die($ex->getMessage());
-					}
+			try {
+				R::exec("DROP TABLE freegame_players");
+			} catch (Exception $ex) {
+				die($ex->getMessage());
+			}
 
-					$app->redirect("/freegame/manage");
+			$app->redirect("/freegame/manage");
 
-				});
-
-
-
+		});
 
 //Form di simulazione del servizio
-$app
-		->get('/freegame/saveplayers', $noAuth(),
-				function () use ($app) {
+$app->get('/freegame/saveplayers', $noAuth(), function () use ($app) {
 
-					$app->getLog()->debug("entra GET /freegame/saveplayers");
+			$app->getLog()->debug("entra GET /freegame/saveplayers");
 
-					$data = array();
-					$data["players"] = R::find('freegame_players');
-					$app->render('freegame/form.html', $data);
+			$data = array();
+			$data["players"] = R::find('freegame_players');
+			$app->render('freegame/form.html', $data);
 
-				});
-
-
-
+		});
 
 // Registra i giocatori
 $app
@@ -92,7 +79,7 @@ $app
 // Registra le risposte
 $app->get('/freegame/lastresponse', $noAuth(), function () use ($app) {
 
-	$data = array();
-	$app->render('freegame/lastresponse.html', $data);
+			$data = array();
+			$app->render('freegame/lastresponse.html', $data);
 
-});
+		});
