@@ -49,7 +49,8 @@ $app->get('/hf/manage', $noAuth(), function () use ($app) {
 /////////////////////// RESET //////////////////////////////////////////////
 
 // Elimina tutti i risultati
-$app->get('/hf/resetall', $noAuth(),
+$app
+		->get('/hf/resetall', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /hf/resetall");
@@ -92,7 +93,8 @@ $app->get('/hf/registercountry', $noAuth(), function () use ($app) {
 		});
 
 // Registra le country
-$app->post('/hf/registercountry', $noAuth(),
+$app
+		->post('/hf/registercountry', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra POST /hf/registercountry");
@@ -295,9 +297,6 @@ $app
 					echo json_encode($last_answer);
 
 				});
-
-
-
 
 // SHOW THE LAST RESPONSE
 $app->get('/hf/lastresponse', $noAuth(), function () use ($app) {
