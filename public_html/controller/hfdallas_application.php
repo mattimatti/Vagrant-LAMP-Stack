@@ -5,8 +5,8 @@ function hfdallas_loadFixtures($app = "APP2") {
 	$maxAnswers = 10;
 	$maxQuestions = 9;
 	
-	for ($x = 1; $x < $maxQuestions; $x++) {
-		for ($i = 1; $i < $maxAnswers; $i++) {
+	for ($x = 1; $x <= $maxQuestions; $x++) {
+		for ($i = 1; $i <= $maxAnswers; $i++) {
 			hfdallas_createAnswer($x, $i, $app);
 		}
 	}
