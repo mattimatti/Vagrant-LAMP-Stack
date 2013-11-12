@@ -13,4 +13,4 @@ $prodlist = array('waau.local', '33.33.33.90', '10.0.1.100');
 
 // for staging environments
 
-$staginglist = array();
+$staginglist = array('hf.mattimatti.com');

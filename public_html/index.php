@@ -116,10 +116,10 @@ TwigView::$twigOptions = array('cache' => false, 'auto_reload' => true);
 if (ENVIRONMENT == 'development') {
 	include 'config/development/dbconnection.php';
 } else if (ENVIRONMENT == 'production') {
-	include 'config/development/dbconnection.php';
+	include 'config/production/dbconnection.php';
 	//R::freeze();
 } else if (ENVIRONMENT == 'staging') {
-	include 'config/production/dbconnection.php';
+	include 'config/staging/dbconnection.php';
 	//R::freeze();
 } else {
 	throw new Exception("No environment found");
