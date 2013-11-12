@@ -136,7 +136,7 @@ $app->config('debug', (ENVIRONMENT == 'development') ? true : false);
 $app->config('mode', ENVIRONMENT);
 
 // in case we want to debug sql queries
-//R::debug(true);
+R::debug(true);
 
 // this must be on top.
 include 'controller/auth.php';
