@@ -30,10 +30,10 @@ function hfdallas_createAnswer($domanda, $risposta, $app = "APP2") {
 
 /////////////////////// ADMIN HOME //////////////////////////////////////////////
 
-$app->get('/hf2/manage', $noAuth(), function () use ($app) {
+$app->get('/hfdallas/manage', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('hf2/index.html', $data);
+			$app->render('hfdallas/index.html', $data);
 
 		});
 
@@ -41,10 +41,10 @@ $app->get('/hf2/manage', $noAuth(), function () use ($app) {
 
 // Elimina tutti i risultati
 $app
-		->get('/hf2/resetall', $noAuth(),
+		->get('/hfdallas/resetall', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /hf2/resetall");
+					$app->getLog()->debug("entra GET /hfdallas/resetall");
 
 					try {
 						R::exec("DROP TABLE hfdallas_countries");
@@ -65,30 +65,30 @@ $app
 						die($ex->getMessage());
 					}
 
-					$app->redirect("/hf2/manage");
+					$app->redirect("/hfdallas/manage");
 
 				});
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
 // Mostra form di test
-$app->get('/hf2/registercountry', $noAuth(), function () use ($app) {
+$app->get('/hfdallas/registercountry', $noAuth(), function () use ($app) {
 
-			$app->getLog()->debug("entra GET /hf2/registercountry");
+			$app->getLog()->debug("entra GET /hfdallas/registercountry");
 
 			$data = array();
 			$data["countries"] = R::getAll('select * from hfdallas_countries');
 
-			$app->render('hf2/registercountry.html', $data);
+			$app->render('hfdallas/registercountry.html', $data);
 
 		});
 
 // Registra le country
 $app
-		->post('/hf2/registercountry', $noAuth(),
+		->post('/hfdallas/registercountry', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hf2/registercountry");
+					$app->getLog()->debug("entra POST /hfdallas/registercountry");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$country_name = $app->request()->post("country");
@@ -107,7 +107,7 @@ $app
 
 					R::store($country);
 
-					$app->redirect("/hf2/registercountry");
+					$app->redirect("/hfdallas/registercountry");
 
 				});
 
@@ -115,7 +115,7 @@ $app
 
 // SHOW THE FORM
 $app
-		->get('/hf2/app1/registeranswer', $noAuth(),
+		->get('/hfdallas/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /app1/registeranswer");
@@ -123,16 +123,16 @@ $app
 					$data = array();
 					$data["answers"] = R::find('hfdallas_answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
 
-					$app->render('hf2/app1/form.html', $data);
+					$app->render('hfdallas/app1/form.html', $data);
 
 				});
 
 // REGISTER ANSWER APP1
 $app
-		->post('/hf2/app1/registeranswer', $noAuth(),
+		->post('/hfdallas/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hf2/app1/registeranswer");
+					$app->getLog()->debug("entra POST /hfdallas/app1/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					if ($app->request()->post("risposte") . "" !== "null") {
@@ -154,7 +154,7 @@ $app
 					$simulate = $app->request()->post("simulate");
 
 					if ($simulate) {
-						$app->redirect("/hf2/app1/registeranswer");
+						$app->redirect("/hfdallas/app1/registeranswer");
 					}
 
 				});
@@ -163,23 +163,23 @@ $app
 
 // Registra le risposte
 $app
-		->get('/hf2/app2/registeranswer', $noAuth(),
+		->get('/hfdallas/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /hf2/app2/registeranswer");
+					$app->getLog()->debug("entra GET /hfdallas/app2/registeranswer");
 
 					$data = array();
 					$data["answers"] = R::find("hfdallas_app2", ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
-					$app->render('hf2/app2/form.html', $data);
+					$app->render('hfdallas/app2/form.html', $data);
 
 				});
 
 // Registra le risposte
 $app
-		->post('/hf2/app2/registeranswer', $noAuth(),
+		->post('/hfdallas/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hf2/app2/registeranswer");
+					$app->getLog()->debug("entra POST /hfdallas/app2/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					//if($app->request()->post("risposte")){
@@ -241,7 +241,7 @@ $app
 
 // GET THE STATUS
 $app
-		->get('/hf2/getstatus', $noAuth(),
+		->get('/hfdallas/getstatus', $noAuth(),
 				function () use ($app) {
 
 					$last_answer = R::getRow('select * from hfdallas_answers where id=(SELECT MAX(id)  FROM hfdallas_answers)');
@@ -290,9 +290,9 @@ $app
 				});
 
 // SHOW THE LAST RESPONSE
-$app->get('/hf2/lastresponse', $noAuth(), function () use ($app) {
+$app->get('/hfdallas/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('hf2/lastresponse.html', $data);
+			$app->render('hfdallas/lastresponse.html', $data);
 
 		});
