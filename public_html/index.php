@@ -34,7 +34,9 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 	error_reporting(E_ALL);
 	ini_set('display_errors', "1");
 
-} else if (in_array($_SERVER['HTTP_HOST'], $prodlist)) {
+}
+
+if (in_array($_SERVER['HTTP_HOST'], $prodlist)) {
 
 	define("ENVIRONMENT", 'production');
 	define("BASE_FOLDER", '');
@@ -42,7 +44,9 @@ if (in_array($_SERVER['HTTP_HOST'], $devlist)) {
 	error_reporting(E_ERROR);
 	ini_set('display_errors', 0);
 
-} else if (in_array($_SERVER['HTTP_HOST'], $staginglist)) {
+} 
+
+if (in_array($_SERVER['HTTP_HOST'], $staginglist)) {
 
 	define("ENVIRONMENT", 'staging');
 	define("BASE_FOLDER", '');
