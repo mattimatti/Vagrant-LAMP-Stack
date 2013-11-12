@@ -1,0 +1,33 @@
+{% extends "hfdallas/layout.html" %}
+
+{% block content %}
+<pre>
+ POST /hfdallas/registercountry    [country]
+</pre>
+
+
+      <form class="form-horizontal" method="post">
+        <h2 class="">Salva un paese</h2>
+          <select name="country" class="span3">
+			  <option>Italia</option>
+			  <option>Francia</option>
+			  <option>Germania</option>
+			  <option>Grecia</option>
+			  <option>Spagna</option>
+			</select>
+        <button class="btn btn-primary" type="submit">Salva</button>
+      </form>
+      
+      <hr/>
+      
+      <h3>Risultati</h3>
+      
+<table class="table table-striped table-bordered">
+         {% for country in countries %}
+				                  
+				<tr><td>{{country.name}}</td><td>{{country.count}}</td></tr>               
+				          
+		{% endfor %}
+</table>      
+      
+{% endblock %}
