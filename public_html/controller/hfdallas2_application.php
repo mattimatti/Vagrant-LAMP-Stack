@@ -258,6 +258,9 @@ $app
 							// computo delle percentuali
 							$allanswers = R::find("hfdallas2_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 							
+							
+							// MIXUP VALUES FROM OTHER APP ======
+							
 							$otheranswers = R::find("hfdallas_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 
 							$allanswers = array_merge($allanswers, $otheranswers);
@@ -278,6 +281,9 @@ $app
 							
 							$allanswers = array_values($indexed);
 							
+							
+							// END MIXUP VALUES FROM OTHER APP ======
+							
 
 							$totalAnswers = 0;
 							foreach ($allanswers as $answer) {
@@ -285,10 +291,6 @@ $app
 							}
 							
 							
-							
-							
-							
-
 							$risposte = array();
 
 							foreach ($allanswers as $answer) {
