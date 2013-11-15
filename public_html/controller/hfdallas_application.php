@@ -260,8 +260,22 @@ $app
 							$otheranswers = R::find("hfdallas_app", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 							
 							$allanswers = array_merge($allanswers, $otheranswers);
-							
+
 							// Estrai il totale di risposte per questa domanda
+							$indexed = array();
+							foreach ($allanswers as $answer) {
+								if(!isset($indexed[$answer->risposte])){
+									$indexed[$answer->risposte] = $answer;
+								}else{
+									$elm = $indexed[$answer->risposte];
+									$elm->quante += $answer->quante;
+							
+									$indexed[$answer->risposte] = $elm;
+								}
+							}
+								
+								
+							$allanswers = array_values($indexed);
 
 							$totalAnswers = 0;
 							foreach ($allanswers as $answer) {
