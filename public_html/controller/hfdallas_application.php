@@ -262,7 +262,7 @@ $app
 							
 							// MIXUP VALUES FROM OTHER APP ======
 							
-							$otheranswers = R::find("hfdallas_app", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
+							$otheranswers = R::find("hfdallas2_app", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 							
 							$allanswers = array_merge($allanswers, $otheranswers);
 
