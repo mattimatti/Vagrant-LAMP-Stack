@@ -1,0 +1,59 @@
+{% extends "hfdallas2/layout.html" %} 
+
+
+
+{% block content %} 
+
+<pre>
+ GET /hfdallas2/getstatus
+</pre>
+
+
+
+
+	<!-- BUTTON TO GET STATUS -->
+	
+	<a href="javascript:;" class="btn" id="getstatus">Richiedi Ultima risposta salvata</a>
+
+	<hr/>
+	
+	<!-- THE STATUS HOLDER -->
+	
+	<pre id="status_response">
+	
+	
+	</pre>	
+
+
+
+{% endblock %} 
+
+
+
+{% block pagejs %}
+
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+
+				$("#getstatus").click(
+						function() {
+
+							$.ajax({
+								url : "/hfdallas2/getstatus",
+								dataType : "json",
+								success : function(response) {
+
+									$("#status_response").html(
+											JSON.stringify(response, undefined,
+													2));
+
+								}
+							});
+
+						});
+
+			});
+</script>
+
+{% endblock %}
