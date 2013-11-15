@@ -5,23 +5,23 @@
  * Build a defined number of questions and answers.
  * @param string $app
  */
-function hfdallas_loadFixtures($app = "APP2") {
+function hfdallas2_loadFixtures($app = "APP2") {
 
 	$maxQuestions = 9;
 	$maxAnswers = 8;
 	
 	for ($x = 1; $x <= $maxQuestions; $x++) {
 		for ($i = 1; $i <= $maxAnswers; $i++) {
-			hfdallas_createAnswer($x, $i, $app);
+			hfdallas2_createAnswer($x, $i, $app);
 		}
 	}
 
 
 }
 
-function hfdallas_createAnswer($domanda, $risposta, $app = "APP2") {
+function hfdallas2_createAnswer($domanda, $risposta, $app = "APP2") {
 
-	$answer = R::dispense("hfdallas_app2");
+	$answer = R::dispense("hfdallas2_app2");
 
 	$answer->domanda = $domanda;
 	$answer->risposte = "" . $risposta;
@@ -35,10 +35,10 @@ function hfdallas_createAnswer($domanda, $risposta, $app = "APP2") {
 
 /////////////////////// ADMIN HOME //////////////////////////////////////////////
 
-$app->get('/hfdallas/manage', $noAuth(), function () use ($app) {
+$app->get('/hfdallas2/manage', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('hfdallas/index.html', $data);
+			$app->render('hfdallas2/index.html', $data);
 
 		});
 
@@ -46,64 +46,64 @@ $app->get('/hfdallas/manage', $noAuth(), function () use ($app) {
 
 // Elimina tutti i risultati
 $app
-		->get('/hfdallas/resetall', $noAuth(),
+		->get('/hfdallas2/resetall', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /hfdallas/resetall");
+					$app->getLog()->debug("entra GET /hfdallas2/resetall");
 
 					try {
-						R::exec("DROP TABLE hfdallas_countries");
+						R::exec("DROP TABLE hfdallas2_countries");
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
 					try {
-						R::exec("DROP TABLE hfdallas_answers");
+						R::exec("DROP TABLE hfdallas2_answers");
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
 					try {
-						R::exec("DROP TABLE hfdallas_app2");
+						R::exec("DROP TABLE hfdallas2_app2");
 
-						hfdallas_loadFixtures();
+						hfdallas2_loadFixtures();
 
 					} catch (Exception $ex) {
 						die($ex->getMessage());
 					}
 
-					$app->redirect("/hfdallas/manage");
+					$app->redirect("/hfdallas2/manage");
 
 				});
 
 /////////////////////// COUNTRIES //////////////////////////////////////////////
 
 // Mostra form di test
-$app->get('/hfdallas/registercountry', $noAuth(), function () use ($app) {
+$app->get('/hfdallas2/registercountry', $noAuth(), function () use ($app) {
 
-			$app->getLog()->debug("entra GET /hfdallas/registercountry");
+			$app->getLog()->debug("entra GET /hfdallas2/registercountry");
 
 			$data = array();
-			$data["countries"] = R::getAll('select * from hfdallas_countries');
+			$data["countries"] = R::getAll('select * from hfdallas2_countries');
 
-			$app->render('hfdallas/registercountry.html', $data);
+			$app->render('hfdallas2/registercountry.html', $data);
 
 		});
 
 // Registra le country
 $app
-		->post('/hfdallas/registercountry', $noAuth(),
+		->post('/hfdallas2/registercountry', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hfdallas/registercountry");
+					$app->getLog()->debug("entra POST /hfdallas2/registercountry");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					$country_name = $app->request()->post("country");
 
 					// cerca country
-					$country = R::findOne('hfdallas_countries', ' name = :name ', array(':name' => $country_name));
+					$country = R::findOne('hfdallas2_countries', ' name = :name ', array(':name' => $country_name));
 
 					// sen non trova country crea oppure aggiorna
 					if (!$country) {
-						$country = R::dispense("hfdallas_countries");
+						$country = R::dispense("hfdallas2_countries");
 						$country->name = $country_name;
 						$country->count = 1;
 					} else {
@@ -112,7 +112,7 @@ $app
 
 					R::store($country);
 
-					$app->redirect("/hfdallas/registercountry");
+					$app->redirect("/hfdallas2/registercountry");
 
 				});
 
@@ -120,29 +120,29 @@ $app
 
 // SHOW THE FORM
 $app
-		->get('/hfdallas/app1/registeranswer', $noAuth(),
+		->get('/hfdallas2/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
 					$app->getLog()->debug("entra GET /app1/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find('hfdallas_answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
+					$data["answers"] = R::find('hfdallas2_answers', ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP1"));
 
-					$app->render('hfdallas/app1/form.html', $data);
+					$app->render('hfdallas2/app1/form.html', $data);
 
 				});
 
 // REGISTER ANSWER APP1
 $app
-		->post('/hfdallas/app1/registeranswer', $noAuth(),
+		->post('/hfdallas2/app1/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hfdallas/app1/registeranswer");
+					$app->getLog()->debug("entra POST /hfdallas2/app1/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					if ($app->request()->post("risposte") . "" !== "null") {
 
-						$answer = R::dispense("hfdallas_answers");
+						$answer = R::dispense("hfdallas2_answers");
 
 						$answer->domanda = $app->request()->post("domanda");
 						$answer->risposte = $app->request()->post("risposte");
@@ -159,7 +159,7 @@ $app
 					$simulate = $app->request()->post("simulate");
 
 					if ($simulate) {
-						$app->redirect("/hfdallas/app1/registeranswer");
+						$app->redirect("/hfdallas2/app1/registeranswer");
 					}
 
 				});
@@ -168,29 +168,29 @@ $app
 
 // Registra le risposte
 $app
-		->get('/hfdallas/app2/registeranswer', $noAuth(),
+		->get('/hfdallas2/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra GET /hfdallas/app2/registeranswer");
+					$app->getLog()->debug("entra GET /hfdallas2/app2/registeranswer");
 
 					$data = array();
-					$data["answers"] = R::find("hfdallas_app2", ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
-					$app->render('hfdallas/app2/form.html', $data);
+					$data["answers"] = R::find("hfdallas2_app2", ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APP2"));
+					$app->render('hfdallas2/app2/form.html', $data);
 
 				});
 
 // Registra le risposte
 $app
-		->post('/hfdallas/app2/registeranswer', $noAuth(),
+		->post('/hfdallas2/app2/registeranswer', $noAuth(),
 				function () use ($app) {
 
-					$app->getLog()->debug("entra POST /hfdallas/app2/registeranswer");
+					$app->getLog()->debug("entra POST /hfdallas2/app2/registeranswer");
 					$app->getLog()->debug(print_r($app->request()->post(), 1));
 
 					//if($app->request()->post("risposte")){
 
 					// save in answers
-					$answer = R::dispense("hfdallas_answers");
+					$answer = R::dispense("hfdallas2_answers");
 
 					$answer->domanda = $app->request()->post("domanda");
 					$answer->risposte = $app->request()->post("risposte");
@@ -206,7 +206,7 @@ $app
 					// Saves in indexed table
 
 					// La risposta è pregenerata
-					$answer = R::findOne("hfdallas_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"), ':risposte' => $app->request()->post("risposte")));
+					$answer = R::findOne("hfdallas2_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda AND risposte = :risposte ', array(':qualeAPP' => "APP2", ':domanda' => $app->request()->post("domanda"), ':risposte' => $app->request()->post("risposte")));
 
 					if ($answer) {
 
@@ -246,19 +246,20 @@ $app
 
 // GET THE STATUS
 $app
-		->get('/hfdallas/getstatus', $noAuth(),
+		->get('/hfdallas2/getstatus', $noAuth(),
 				function () use ($app) {
 
-					$last_answer = R::getRow('select * from hfdallas_answers where id=(SELECT MAX(id)  FROM hfdallas_answers)');
+					$last_answer = R::getRow('select * from hfdallas2_answers where id=(SELECT MAX(id)  FROM hfdallas2_answers)');
 
 					if ($last_answer) {
 
 						if ($last_answer["qualeAPP"] == "APP2") {
 
 							// computo delle percentuali
-							$allanswers = R::find("hfdallas_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
-							$otheranswers = R::find("hfdallas_app", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
+							$allanswers = R::find("hfdallas2_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
 							
+							$otheranswers = R::find("hfdallas_app2", '  qualeAPP = :qualeAPP AND domanda = :domanda ', array(':qualeAPP' => $last_answer["qualeAPP"], ':domanda' => $last_answer["domanda"]));
+
 							$allanswers = array_merge($allanswers, $otheranswers);
 							
 							// Estrai il totale di risposte per questa domanda
@@ -298,9 +299,9 @@ $app
 				});
 
 // SHOW THE LAST RESPONSE
-$app->get('/hfdallas/lastresponse', $noAuth(), function () use ($app) {
+$app->get('/hfdallas2/lastresponse', $noAuth(), function () use ($app) {
 
 			$data = array();
-			$app->render('hfdallas/lastresponse.html', $data);
+			$app->render('hfdallas2/lastresponse.html', $data);
 
 		});
