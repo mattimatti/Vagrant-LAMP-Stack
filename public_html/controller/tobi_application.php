@@ -128,7 +128,7 @@ $app
 
 						$app->getLog()->debug("aggiornato count a: " . $answer->quante);
 						
-						die($answer->posizione);
+						die($app->request()->post("posizione"));
 
 					} else {
 						$app->getLog()->error("answer non trovata esci");
