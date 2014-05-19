@@ -151,6 +151,7 @@ include 'controller/hfdallas_application.php';
 include 'controller/hfdallas2_application.php';
 include 'controller/freegame_application.php';
 include 'controller/novartis_csu.php';
+include 'controller/tobi_application.php';
 
 // SETUP SLIM APP
 
