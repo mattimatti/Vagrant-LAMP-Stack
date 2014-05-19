@@ -127,8 +127,6 @@ $app
 						R::store($answer);
 
 						$app->getLog()->debug("aggiornato count a: " . $answer->quante);
-						
-						die($app->request()->post("posizione"));
 
 					} else {
 						$app->getLog()->error("answer non trovata esci");
@@ -136,19 +134,19 @@ $app
 						die("ko");
 					}
 
+					die($app->request()->post("posizione"));
 					
-					
-					// If ajax request
-					if ($app->request()->isXhr()) {
+// 					// If ajax request
+// 					if ($app->request()->isXhr()) {
 
-						$response = $app->request()->params();
+// 						$response = $app->request()->params();
 
-						echo json_encode($response);
-						exit();
+// 						echo json_encode($response);
+// 						exit();
 
-					}else{
+// 					}else{
 						
-					}
+// 					}
 
 				});
 
