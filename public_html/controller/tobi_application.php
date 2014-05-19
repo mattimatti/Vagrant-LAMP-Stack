@@ -1,6 +1,10 @@
 <?php
 // 19/05/2014
 
+
+
+
+
 /**
  * Build a defined number of questions and answers.
  * @param string $app
@@ -78,7 +82,11 @@ $app
 
 					$app->getLog()->debug("entra GET /tobi/APPTOBI/registeranswer");
 
+					$maxQuestions = 25;
+					
+					
 					$data = array();
+					$data["maxQuestions"] = $maxQuestions;
 					$data["answers"] = R::find("tobi_app", ' qualeAPP = :qualeAPP ', array(':qualeAPP' => "APPTOBI"));
 					$app->render('tobi/form.html', $data);
 
@@ -119,6 +127,8 @@ $app
 						R::store($answer);
 
 						$app->getLog()->debug("aggiornato count a: " . $answer->quante);
+						
+						die($answer->posizione);
 
 					} else {
 						$app->getLog()->error("answer non trovata esci");
@@ -126,6 +136,8 @@ $app
 						die("ko");
 					}
 
+					
+					
 					// If ajax request
 					if ($app->request()->isXhr()) {
 
@@ -134,6 +146,8 @@ $app
 						echo json_encode($response);
 						exit();
 
+					}else{
+						
 					}
 
 				});
