@@ -209,7 +209,8 @@ $app
 						$last_answer = array();
 					}
 					
-					$last_answer['qualeAPP'] = 'default';
+					unset($last_answer['qualeAPP']);
+					unset($last_answer['id']);
 
 					echo json_encode($last_answer);
 
