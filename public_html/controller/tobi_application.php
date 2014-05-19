@@ -156,6 +156,8 @@ $app
 				function () use ($app) {
 
 					$last_answer = R::getRow('select * from tobi_answers where id=(SELECT MAX(id)  FROM tobi_answers)');
+					
+					unset($last_answer->qualeAPP);
 
 					if ($last_answer) {
 
