@@ -1,6 +1,6 @@
 {% extends "tobi/layout.html" %} {% block content %}
 <pre>
- POST /tobi/registeranswer    [posizione] [qualeAPP] [domanda] [risposte]
+ POST /tobi/registeranswer    [posizione] [domanda] [risposte]
 </pre>
 
 <hr />
@@ -29,15 +29,12 @@
 		<label class="control-label" for="">domanda</label>
 		<div class="controls">
 			<select name="domanda">
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-				<option>4</option>
-				<option>5</option>
-				<option>6</option>
-				<option>7</option>
-				<option>8</option>
-				<option>9</option>
+			{% set counter = 1 %}
+			{% for counter <= maxQuestions %}
+			
+				<option>{{counter}}</option>
+				{% set counter = counter + 1 %}
+			{% endfor %}
 			</select>
 		</div>
 	</div>
